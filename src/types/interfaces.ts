@@ -1,6 +1,6 @@
 export interface CardData {
     cardDataId: string
-    comment: string
+    action: string
     date: string
 }
 

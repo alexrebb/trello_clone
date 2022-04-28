@@ -7,6 +7,7 @@ import { filteredCardState } from '../../store/selectors'
 import { BsCardChecklist } from 'react-icons/bs'
 import { MdOutlineDescription } from 'react-icons/md'
 import CardDescription from '../Cards/CardDescription'
+import CardActionList from '../Cards/CardActionList'
 
 const StyledModalContainer = styled.div`
     display: flex;
@@ -42,6 +43,11 @@ const ModalCard: React.FC<props> = memo(({ onCloseModal }) => {
                     <StyleDescr>Description</StyleDescr>
                 </StyledWrapper>
                 <CardDescription cardDescription={cardState.cardDescription} />
+                <StyledWrapper>
+                    <MdOutlineDescription />
+                    <StyleDescr>Actions</StyleDescr>
+                </StyledWrapper>
+                <CardActionList cardState={cardState}/>
             </StyledModalContainer>
         </Modal>
     )

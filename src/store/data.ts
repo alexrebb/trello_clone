@@ -23,9 +23,19 @@ export const BOARDLIST = [
                         cardData: [
                             {
                                 cardDataId: '151',
-                                comment: 'Едем в поле по полю',
+                                action: 'Едем в поле по полю',
                                 date: 'текущая дата',
                             },
+                            {
+                                cardDataId: '152',
+                                action: 'Едем в поле по полю2',
+                                date: 'текущая дата1',
+                            },
+                            {
+                                cardDataId: '153',
+                                action: 'Едем в поле по полю3',
+                                date: 'текущая дата2',
+                            }
                         ],
                     },
                 ],
