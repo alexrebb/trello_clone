@@ -1,7 +1,6 @@
-import Layout from '../components/Layout/Layout'
+import Layout from '../Layout/Layout'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
-import { memo } from 'react'
 
 const StyledHomeContainer = styled.div`
     height: 100%;
@@ -23,7 +22,7 @@ const StyledButton = styled.button`
     cursor: pointer;
 `
 
-const HomePage = memo(() => {
+const HomePage = () => {
     const navigate = useNavigate()
     const handleClick = () => {
         navigate('/dashboard')
@@ -39,6 +38,6 @@ const HomePage = memo(() => {
             </StyledHomeContainer>
         </Layout>
     )
-})
+}
 
-export default memo(HomePage)
+export default HomePage

@@ -36,3 +36,13 @@ export interface BoardState {
     boardTitle: string
     boardId: string
 }
+
+interface A {
+    x: string
+    y: number
+    z: Arr[]
+}
+
+interface Arr {
+    a: string
+}

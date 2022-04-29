@@ -1,17 +1,22 @@
-import CardAction from "./CardActions";
-import {Cards} from '../../types/interfaces'
+import CardAction from './CardActions'
+import { Cards } from '../../types/interfaces'
+import { memo } from 'react'
 
 interface props {
     cardState: Cards
 }
-const CardActionList: React.FC<props> = ({cardState}) => {
+const CardActionList: React.FC<props> = memo(({ cardState }) => {
     return (
         <>
-        {cardState.cardData.map(data => (
-            <CardAction key={data.cardDataId} action={data.action} date={data.date}/>
-        ))}
+            {cardState.cardData?.map((data) => (
+                <CardAction
+                    key={data.cardDataId}
+                    action={data.action}
+                    date={data.date}
+                />
+            ))}
         </>
-    );
-}
+    )
+})
 
-export default CardActionList;
+export default memo(CardActionList)

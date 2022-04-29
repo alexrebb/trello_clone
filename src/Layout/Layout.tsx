@@ -2,7 +2,7 @@ import { ReactChild, memo } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import { filteredBoardsState } from '../../store/selectors'
+import { filteredBoardsState } from '../store/selectors'
 
 const Overlay = styled.div`
     width: 100%;
@@ -36,12 +36,16 @@ const TitleLogo = styled.div`
     display: flex;
     align-items: center;
 `
+const StyledBoardTitle = styled.h3`
+    padding: 0 40px;
+    color: rgba(31, 27, 27, 0.822);
+`
 interface props {
     children: ReactChild
 }
 
 const Layout: React.FC<props> = memo(({ children }) => {
-    const board: any = useRecoilValue(filteredBoardsState)
+    const board = useRecoilValue(filteredBoardsState)
 
     const navigate = useNavigate()
 
@@ -54,7 +58,9 @@ const Layout: React.FC<props> = memo(({ children }) => {
             <Header>
                 <TitleLogo>
                     <h2>TODOSTER</h2>
-                    <h4>{board?.boardTitle}</h4>
+                    <StyledBoardTitle>
+                        Current board: {board?.boardTitle}
+                    </StyledBoardTitle>
                 </TitleLogo>
 
                 <Button onClick={handleClick}>LOGIN</Button>

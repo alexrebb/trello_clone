@@ -1,4 +1,5 @@
 import styled from 'styled-components'
+import { memo } from 'react'
 
 const StyledDescription = styled.div`
     background-color: background-color: rgba(218, 220, 224, 0.7);
@@ -14,7 +15,15 @@ const StyledDescription = styled.div`
 `
 const StyledActionWrapper = styled.div`
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+`
+const StyledAction = styled.span`
+    padding: 2px 0;
+`
+const StyledDate = styled.span`
+    font-size: 10px;
+    font-weight: bold;
+    color: rgba(31, 27, 27, 0.822);
 `
 
 interface props {
@@ -22,15 +31,15 @@ interface props {
     date: string
 }
 
-const CardAction: React.FC<props> = ({ action, date }) => {
+const CardAction: React.FC<props> = memo(({ action, date }) => {
     return (
         <StyledDescription>
             <StyledActionWrapper>
-                <span>{action}</span>
-                <span>{date}</span>
+                <StyledAction>{action}</StyledAction>
+                <StyledDate>{date}</StyledDate>
             </StyledActionWrapper>
         </StyledDescription>
     )
-}
+})
 
-export default CardAction
+export default memo(CardAction)

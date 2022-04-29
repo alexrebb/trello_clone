@@ -2,12 +2,14 @@ import styled from 'styled-components'
 import { HiOutlinePencil } from 'react-icons/hi'
 import { memo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import { useSetRecoilState } from 'recoil'
-import { CardIdState } from '../../store/atoms'
+import { useSetRecoilState, useRecoilValue } from 'recoil'
+import { CardIdState, BoardListState, BoardIdState } from '../../store/atoms'
+import { FaRegCommentDots } from 'react-icons/fa'
 
 const StyledIcon = styled.span`
     color: rgba(128, 128, 128, 0.9);
     display: none;
+    margin-right: 5px;
 `
 const StyledCard = styled.div`
     display: flex;
@@ -26,6 +28,15 @@ const StyledCard = styled.div`
         }
     }
 `
+const StyledIconsWrapper = styled.div`
+    display: flex;
+`
+const StyledActionAmountWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    color: rgba(128, 128, 128, 0.9);
+    font-size: 14px;
+`
 
 interface props {
     onOpenModal: Function
@@ -38,6 +49,21 @@ interface props {
 const Card: React.FC<props> = memo(
     ({ onOpenModal, cardTitle, cardId, index, listId }) => {
         const setCardId = useSetRecoilState(CardIdState)
+        const state = useRecoilValue(BoardListState)
+        const boardId = useRecoilValue(BoardIdState)
+
+        const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
+        const currentListIndex = state[currentBoardIndex].lists.findIndex(
+            (l) => l.listId === listId
+        )
+        const currentCardIndex = state[currentBoardIndex].lists[
+            currentListIndex
+        ].cards.findIndex((c) => c.cardId === cardId)
+
+        const cardActionAmount =
+            state[currentBoardIndex].lists[currentListIndex].cards[
+                currentCardIndex
+            ].cardData.length
 
         const handleClick = () => {
             onOpenModal()
@@ -57,9 +83,18 @@ const Card: React.FC<props> = memo(
                         ref={provided.innerRef}
                     >
                         <span>{cardTitle}</span>
-                        <StyledIcon>
-                            <HiOutlinePencil />
-                        </StyledIcon>
+                        <StyledIconsWrapper>
+                            <StyledIcon>
+                                <HiOutlinePencil />
+                            </StyledIcon>
+                            {cardActionAmount ? (
+                                <StyledActionAmountWrapper>
+                                    {cardActionAmount} <FaRegCommentDots />
+                                </StyledActionAmountWrapper>
+                            ) : (
+                                <></>
+                            )}
+                        </StyledIconsWrapper>
                     </StyledCard>
                 )}
             </Draggable>

@@ -1,9 +1,9 @@
-import Layout from '../components/Layout/Layout'
+import Layout from '../Layout/Layout'
 import SettingsMenu from '../components/Boards/BoardSetting'
 import styled from 'styled-components'
 import Menu from '../components/Menu/Menu'
 import ListContainer from '../components/Lists/ListsContainer'
-import { useState, memo } from 'react'
+import { useState } from 'react'
 
 const StyledDashBoardContainer = styled.div`
     display: flex;
@@ -11,7 +11,7 @@ const StyledDashBoardContainer = styled.div`
     background: url('https://images.pexels.com/photos/15286/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
 `
 
-const DashBoard = memo(() => {
+const DashBoard = () => {
     const [openSettingsMenu, setOpenSettingsMenu] = useState(false)
 
     const onOpenSettingsMenu = () => {
@@ -33,6 +33,6 @@ const DashBoard = memo(() => {
             </StyledDashBoardContainer>
         </Layout>
     )
-})
+}
 
-export default memo(DashBoard)
+export default DashBoard

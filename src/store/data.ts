@@ -1,3 +1,7 @@
+import moment from 'moment'
+
+const displayDateWithTime = moment().format('LLLL')
+
 export const USER = {
     userName: 'Alex',
     userId: '101',
@@ -23,19 +27,9 @@ export const BOARDLIST = [
                         cardData: [
                             {
                                 cardDataId: '151',
-                                action: 'Едем в поле по полю',
-                                date: 'текущая дата',
+                                action: 'First comment',
+                                date: displayDateWithTime,
                             },
-                            {
-                                cardDataId: '152',
-                                action: 'Едем в поле по полю2',
-                                date: 'текущая дата1',
-                            },
-                            {
-                                cardDataId: '153',
-                                action: 'Едем в поле по полю3',
-                                date: 'текущая дата2',
-                            }
                         ],
                     },
                 ],

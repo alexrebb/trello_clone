@@ -1,13 +1,14 @@
 import Modal from './Modal'
-import { memo, useState } from 'react'
+import CardDescription from '../Cards/CardDescription'
+import CardActionList from '../Cards/CardActionList'
+import CardAddAction from '../Cards/CardAddAction'
+
+import { memo } from 'react'
 import styled from 'styled-components'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { BoardListState } from '../../store/atoms'
+import { useRecoilValue } from 'recoil'
 import { filteredCardState } from '../../store/selectors'
 import { BsCardChecklist } from 'react-icons/bs'
 import { MdOutlineDescription } from 'react-icons/md'
-import CardDescription from '../Cards/CardDescription'
-import CardActionList from '../Cards/CardActionList'
 
 const StyledModalContainer = styled.div`
     display: flex;
@@ -22,6 +23,7 @@ const StyledTitle = styled.h3`
 `
 const StyleDescr = styled.h4`
     margin-left: 10px;
+    margin-right: 15px;
 `
 
 interface props {
@@ -30,6 +32,8 @@ interface props {
 
 const ModalCard: React.FC<props> = memo(({ onCloseModal }) => {
     const cardState = useRecoilValue(filteredCardState)
+
+    console.log(cardState)
 
     return (
         <Modal onCloseModal={onCloseModal}>
@@ -43,11 +47,8 @@ const ModalCard: React.FC<props> = memo(({ onCloseModal }) => {
                     <StyleDescr>Description</StyleDescr>
                 </StyledWrapper>
                 <CardDescription cardDescription={cardState.cardDescription} />
-                <StyledWrapper>
-                    <MdOutlineDescription />
-                    <StyleDescr>Actions</StyleDescr>
-                </StyledWrapper>
-                <CardActionList cardState={cardState}/>
+                <CardAddAction />
+                <CardActionList cardState={cardState} />
             </StyledModalContainer>
         </Modal>
     )

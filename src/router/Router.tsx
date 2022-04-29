@@ -1,9 +1,8 @@
 import HomePage from '../pages/HomePage'
 import DashBoard from '../pages/DashBoard'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { memo } from 'react'
 
-const Router = memo(() => {
+const Router = () => {
     return (
         <BrowserRouter>
             <Routes>
@@ -12,6 +11,6 @@ const Router = memo(() => {
             </Routes>
         </BrowserRouter>
     )
-})
+}
 
-export default memo(Router)
+export default Router

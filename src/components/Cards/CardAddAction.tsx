@@ -1,10 +1,33 @@
-import { useState, memo } from 'react'
 import styled from 'styled-components'
+import { CardData } from '../../types/interfaces'
+import { BsJournalPlus } from 'react-icons/bs'
+import { MdOutlineDescription } from 'react-icons/md'
+import { useState } from 'react'
 import { GrClose } from 'react-icons/gr'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { BoardListState, CardIdState, BoardIdState } from '../../store/atoms'
+import { BoardListState, BoardIdState, CardIdState } from '../../store/atoms'
 import produce from 'immer'
+import moment from 'moment'
 
+const StyledIconPlus = styled.span`
+    padding: 4px 4px 0 4px;
+    border-radius: 7px;
+    cursor: pointer;
+    &:hover {
+        background-color: rgba(128, 128, 128, 0.8);
+    }
+    &:active {
+        background-color: rgba(128, 128, 128, 0.45);
+    }
+`
+const StyleDescr = styled.h4`
+    margin-left: 10px;
+    margin-right: 15px;
+`
+const StyledWrapper = styled.div`
+    display: flex;
+    align-items: center;
+`
 const StyledInputForm = styled.form`
     width: 100%;
     display: flex;
@@ -46,39 +69,32 @@ const CloseInputIcon = styled.span`
         color: black;
     }
 `
-const StyledDescription = styled.div`
-    background-color: background-color: rgba(218, 220, 224, 0.7);
-    border-radius: 3px;
-    box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
-    padding: 15px;
-    font-size: 12px;
-    cursor: pointer;
-    word-break: break-all;
-    &:hover {
-        background-color: rgb(235, 236, 240);
-    }
-`
-interface props {
-    cardDescription: string
-}
 
-const CardDescription: React.FC<props> = memo(({ cardDescription }) => {
+const CardAddAction = () => {
     const [openInputForm, setOpenInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [state, setState] = useRecoilState(BoardListState)
-    const cardState = useRecoilValue(CardIdState)
     const boardId = useRecoilValue(BoardIdState)
+    const cardState = useRecoilValue(CardIdState)
 
-    const openInputFormHandler = () => {
-        setOpenInputForm(true)
-    }
     const closeInputFormHandler = () => {
         setOpenInputForm(false)
     }
-    const onChangeCardDescription = (e: React.FormEvent) => {
+    const onOpenInputFormHandler = () => {
+        setOpenInputForm(true)
+    }
+
+    const displayDateWithTime = moment().format('LLLL')
+
+    const onAddCardAction = (e: React.FormEvent) => {
         e.preventDefault()
         if (!inputValue) return
         setOpenInputForm(false)
+        const newAction: CardData = {
+            cardDataId: Math.floor(Math.random() * 10000).toString(),
+            action: inputValue,
+            date: displayDateWithTime,
+        }
         const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
         const currentListIndex = state[currentBoardIndex].lists.findIndex(
             (l) => l.listId === cardState.listId
@@ -90,7 +106,7 @@ const CardDescription: React.FC<props> = memo(({ cardDescription }) => {
             produce(state, (draftState) => {
                 draftState[currentBoardIndex].lists[currentListIndex].cards[
                     currentCardIndex
-                ].cardDescription = inputValue
+                ].cardData.unshift(newAction)
             })
         )
         setInputValue('')
@@ -98,21 +114,21 @@ const CardDescription: React.FC<props> = memo(({ cardDescription }) => {
 
     return (
         <>
-            {!openInputForm && (
-                <StyledDescription onClick={openInputFormHandler}>
-                    {cardDescription
-                        ? cardDescription
-                        : 'Add a more deteiled description...'}
-                </StyledDescription>
-            )}
+            <StyledWrapper>
+                <MdOutlineDescription />
+                <StyleDescr>Actions</StyleDescr>
+                <StyledIconPlus onClick={onOpenInputFormHandler}>
+                    <BsJournalPlus />
+                </StyledIconPlus>
+            </StyledWrapper>
             {openInputForm && (
-                <StyledInputForm onSubmit={onChangeCardDescription}>
+                <StyledInputForm onSubmit={onAddCardAction}>
                     <StyledTextArea
-                        placeholder="Add a more deteiled description..."
+                        placeholder="Write a comment..."
                         autoFocus
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        maxLength={160}
+                        maxLength={300}
                     />
                     <ButtonsWrapper>
                         <SubmitButton>Save</SubmitButton>
@@ -124,6 +140,6 @@ const CardDescription: React.FC<props> = memo(({ cardDescription }) => {
             )}
         </>
     )
-})
+}
 
-export default memo(CardDescription)
+export default CardAddAction

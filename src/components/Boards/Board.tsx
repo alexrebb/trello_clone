@@ -4,7 +4,7 @@ import { memo } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { BoardIdState, BoardTitleState } from '../../store/atoms'
 
-const BoardContainer = styled.div`
+const StyledBoardContainer = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-between;
@@ -22,12 +22,12 @@ const StyledBoard = styled.div`
     border-radius: 7px;
     cursor: pointer;
     &:hover {
-        ${BoardContainer} {
+        ${StyledBoardContainer} {
             background-color: rgba(128, 128, 128, 0.5);
         }
     }
     &:active {
-        ${BoardContainer} {
+        ${StyledBoardContainer} {
             background-color: rgba(128, 128, 128, 0.3);
         }
     }
@@ -68,14 +68,14 @@ const Board: React.FC<props> = memo(
         }
 
         return (
-            <BoardContainer>
+            <StyledBoardContainer>
                 <StyledBoard onClick={onClickHandleBoard}>
                     {boardTitle}
                 </StyledBoard>
                 <StyledIcon onClick={onOpenSettingsMenuHandler}>
                     <VscSettingsGear />
                 </StyledIcon>
-            </BoardContainer>
+            </StyledBoardContainer>
         )
     }
 )

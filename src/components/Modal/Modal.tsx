@@ -10,6 +10,7 @@ const StyledModal = styled.div`
     padding: 1rem;
     border-radius: 2px;
     z-index: 30;
+    overflow-y: auto;
     animation: slide-down 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
     @keyframes slide-down {
         from {
