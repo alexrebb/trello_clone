@@ -4,8 +4,12 @@
     font-family: 'Oxygen', sans-serif;
 }
 
+
 html,
 body {
     margin: 0;
     padding: 0;
+    comment: "это называется reset.css или normilize.css, почитай";
+    comment: "Если захочещь свой оставить, добавь на все  box-sizeing:border-box";
+    comment:  "Иначе будет много стрелять в ногу";
 }

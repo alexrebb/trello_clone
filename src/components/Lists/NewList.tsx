@@ -6,6 +6,13 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { BoardListState, BoardIdState } from '../../store/atoms'
 import produce from 'immer'
 
+
+/**
+ * left: 87.5%; очень неустойчивая конструкция
+ * Она будет постоянно ломаться при малейшем измении размеров кнопки, боковой панели и чего угодно
+ * Лучше закладывать в значение смысл, а он такой left: calc(100% - 170px);
+ * 
+ *  */ 
 const StyledAddListContainer = styled.div`
     position: fixed;
     left: 87.5%;
@@ -108,6 +115,7 @@ const NewList = memo(() => {
     return (
         <StyledAddListContainer>
             {!openNewListInputForm && (
+                // В зоне padding вокруг этого элемента обработчик не рабоает, нужно жмякнуть ровно по надписи
                 <StyledAddList onClick={openNewListInputFormHandler}>
                     <HiOutlinePlus />
                     <span> Add another list</span>

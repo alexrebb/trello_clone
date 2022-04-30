@@ -7,6 +7,8 @@ import { MdMoreHoriz } from 'react-icons/md'
 import produce from 'immer'
 import { BoardState } from '../../types/interfaces'
 
+// А почему в процентах?  Тебе здесь наверное нужна конкрентая ширина в пикселях.
+// Кто-нибудь откроет на ультрашироком мониторе и получит неадекватно широкое меню
 const StyledSettingsMenu = styled.div`
     display: flex;
     flex-direction: column;

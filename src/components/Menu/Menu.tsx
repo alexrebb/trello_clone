@@ -2,6 +2,8 @@ import BoardsContainer from '../Boards/BoardsContainer'
 import styled from 'styled-components'
 import { memo } from 'react'
 
+// А почему в процентах?  Тебе здесь наверное нужна конкрентая ширина в пикселях.
+// Кто-нибудь откроет на ультрашироком мониторе и получит неадекватно широкое меню
 const StyledMenuContainer = styled.div`
     display: flex;
     flex-direction: column;

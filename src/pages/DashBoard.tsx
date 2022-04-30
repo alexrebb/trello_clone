@@ -22,6 +22,9 @@ const DashBoard = () => {
     }
 
     return (
+        // Что-то у тебя не так тут с ограничениями по ширине, если карточек много то меню боковое ширину не держит
+        // Скукоживается, уезжает за экран налево
+    
         <Layout>
             <StyledDashBoardContainer>
                 <Menu onOpenSettingsMenu={onOpenSettingsMenu} />

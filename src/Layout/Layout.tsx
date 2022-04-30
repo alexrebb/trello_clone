@@ -18,6 +18,13 @@ const Header = styled.header`
     background-color: rgba(175, 163, 163, 0.5);
     padding: 0 30px;
 `
+
+/** 
+ * Т.к. header уже занимает 70px, Container с высотой 100vh на 70 пискелей не влезает, и его низ скрывается за экраном.
+ * Потом в homepage костылищшь с margin 30vh.
+ * Почитай как делать так чтобы блок заполнял все пространство по вертикали 
+ * https://stackoverflow.com/questions/25098042/fill-remaining-vertical-space-with-css-using-displayflex
+ **/
 const Container = styled.section`
     max-width: 100%;
     margin: 0 auto;

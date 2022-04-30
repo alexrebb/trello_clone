@@ -1,5 +1,6 @@
 import Lists from './Lists'
 import styled from 'styled-components'
+// Я бы переименовалво что-то более говорящее, наприимер AddNewList
 import NewList from './NewList'
 import { BoardListState, BoardIdState, userDevice } from '../../store/atoms'
 import { useEffect, memo, useCallback, useState } from 'react'

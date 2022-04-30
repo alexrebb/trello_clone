@@ -8,6 +8,7 @@ const StyledHomeContainer = styled.div`
     flex-direction: column;
     align-items: center;
 `
+// Вот здесь тогда не нужно костылить с отступами будет
 const StyledTitle = styled.h1`
     margin-top: 30vh;
     font-size: 70px;
