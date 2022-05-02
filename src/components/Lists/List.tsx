@@ -2,7 +2,7 @@ import CardList from '../Cards/CardList'
 import ListTitle from './ListTitle'
 import CardTitle from '../Cards/CardTitle'
 import { memo } from 'react'
-import { Cards } from '../../types/interfaces'
+import { Cards } from '../../types'
 
 interface props {
     onOpenModal: Function

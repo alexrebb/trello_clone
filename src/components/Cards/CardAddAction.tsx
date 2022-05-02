@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import { CardData } from '../../types/interfaces'
+import { CardData } from '../../types'
 import { BsJournalPlus } from 'react-icons/bs'
 import { MdOutlineDescription } from 'react-icons/md'
 import { useState } from 'react'
@@ -8,6 +8,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { BoardListState, BoardIdState, CardIdState } from '../../store/atoms'
 import produce from 'immer'
 import moment from 'moment'
+import { v4 as uuid } from 'uuid'
 
 const StyledIconPlus = styled.span`
     padding: 4px 4px 0 4px;
@@ -91,7 +92,7 @@ const CardAddAction = () => {
         if (!inputValue) return
         setOpenInputForm(false)
         const newAction: CardData = {
-            cardDataId: Math.floor(Math.random() * 10000).toString(),
+            cardDataId: uuid(),
             action: inputValue,
             date: displayDateWithTime,
         }

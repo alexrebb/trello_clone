@@ -1,5 +1,5 @@
 import CardAction from './CardActions'
-import { Cards } from '../../types/interfaces'
+import { Cards } from '../../types'
 import { memo } from 'react'
 
 interface props {

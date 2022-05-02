@@ -5,17 +5,17 @@ import { useRecoilState } from 'recoil'
 import { BoardTitleState, BoardListState } from '../../store/atoms'
 import { MdMoreHoriz } from 'react-icons/md'
 import produce from 'immer'
-import { BoardState } from '../../types/interfaces'
+import { BoardState } from '../../types'
 
 const StyledSettingsMenu = styled.div`
     display: flex;
     flex-direction: column;
     background-color: rgb(241, 239, 239);
-    width: 17%;
+    width: 240px;
     border-radius: 5px;
     margin-top: 10px;
     margin-left: 10px;
-    height: 400px;
+    height: 200px;
     padding: 10px;
     animation: slide 700ms cubic-bezier(0.25, 0.1, 0.25, 1);
     @keyframes slide {
@@ -94,10 +94,10 @@ const StyledBtn = styled.button`
 `
 
 interface props {
-    onCloseSettingsMenu: Function
+    isOnCloseSettingsMenu: Function
 }
 
-const SettingsMenu: React.FC<props> = memo(({ onCloseSettingsMenu }) => {
+const BoardSetting: React.FC<props> = memo(({ isOnCloseSettingsMenu }) => {
     const [openInputTitle, setOpenInputTitle] = useState(false)
     const [openRemoveList, setOpenRemoveList] = useState(false)
     const [inputValue, setInputValue] = useState('')
@@ -109,7 +109,7 @@ const SettingsMenu: React.FC<props> = memo(({ onCloseSettingsMenu }) => {
         setOpenInputTitle(true)
     }
     const onCloseSettingsMenuHandler = () => {
-        onCloseSettingsMenu()
+        isOnCloseSettingsMenu()
     }
     const onCloseRemoveBoardHandler = () => {
         setOpenRemoveList(false)
@@ -153,8 +153,8 @@ const SettingsMenu: React.FC<props> = memo(({ onCloseSettingsMenu }) => {
                 ))
             })
         )
-        onCloseSettingsMenu()
-    }, [boardTitleState.boardId, onCloseSettingsMenu, setState, state])
+        isOnCloseSettingsMenu()
+    }, [boardTitleState.boardId, isOnCloseSettingsMenu, setState, state])
 
     return (
         <StyledSettingsMenu>
@@ -202,4 +202,4 @@ const SettingsMenu: React.FC<props> = memo(({ onCloseSettingsMenu }) => {
     )
 })
 
-export default memo(SettingsMenu)
+export default memo(BoardSetting)

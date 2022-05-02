@@ -1,13 +1,15 @@
-import { ReactChild, memo } from 'react'
+import { ReactChild } from 'react'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { filteredBoardsState } from '../store/selectors'
 
 const Overlay = styled.div`
+    display: flex;
+    flex-flow: column;
+    align-items: stretch;
     width: 100%;
-    height: 100vh;
-    position: fixed;
+    height: 100%;
 `
 const Header = styled.header`
     max-width: 100%;
@@ -19,9 +21,8 @@ const Header = styled.header`
     padding: 0 30px;
 `
 const Container = styled.section`
-    max-width: 100%;
-    margin: 0 auto;
-    height: 100vh;
+    flex: 1;
+    overflow: auto;
 `
 const Button = styled.button`
     color: black;
@@ -44,7 +45,7 @@ interface props {
     children: ReactChild
 }
 
-const Layout: React.FC<props> = memo(({ children }) => {
+const Layout: React.FC<props> = ({ children }) => {
     const board = useRecoilValue(filteredBoardsState)
 
     const navigate = useNavigate()
@@ -68,6 +69,6 @@ const Layout: React.FC<props> = memo(({ children }) => {
             <Container>{children}</Container>
         </Overlay>
     )
-})
+}
 
-export default memo(Layout)
+export default Layout

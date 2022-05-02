@@ -18,7 +18,7 @@ const StyledBoardContainer = styled.div`
     }
 `
 const StyledBoard = styled.div`
-    width: max-content;
+    width: 100%;
     border-radius: 7px;
     cursor: pointer;
     &:hover {

@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import Card from './Card'
 import { memo } from 'react'
-import { Cards } from '../../types/interfaces'
+import { Cards } from '../../types'
 import { Droppable } from 'react-beautiful-dnd'
 
 const StyledCardList = styled.div`

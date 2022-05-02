@@ -1,24 +1,19 @@
+import { BsCardChecklist } from 'react-icons/bs'
 import styled from 'styled-components'
-import { HiOutlinePlus } from 'react-icons/hi'
+import { useRecoilValue, useRecoilState } from 'recoil'
+import { filteredCardState } from '../../store/selectors'
+import { BoardIdState, BoardListState, CardIdState } from '../../store/atoms'
+import { useState } from 'react'
 import { GrClose } from 'react-icons/gr'
-import { useState, memo } from 'react'
 import produce from 'immer'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { BoardListState, BoardIdState } from '../../store/atoms'
-import { v4 as uuid } from 'uuid'
 
-const StyledAddCard = styled.div`
-    color: gray;
-    padding: 5px 10px;
+const StyledTitle = styled.h3`
+    margin-left: 10px;
     cursor: pointer;
+`
+const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
-    border-radius: 3px;
-
-    &:hover {
-        background-color: rgba(128, 128, 128, 0.45);
-        color: black;
-    }
 `
 const StyledInputForm = styled.form`
     width: 100%;
@@ -61,15 +56,14 @@ const CloseInputIcon = styled.span`
         color: black;
     }
 `
-interface props {
-    listId: string
-}
 
-const CardTitle: React.FC<props> = memo(({ listId }) => {
+const CardTitleDescription = () => {
     const [openInputForm, setOpenInputForm] = useState(false)
+    const currentCard = useRecoilValue(filteredCardState)
     const [inputValue, setInputValue] = useState('')
     const [state, setState] = useRecoilState(BoardListState)
     const boardId = useRecoilValue(BoardIdState)
+    const cardState = useRecoilValue(CardIdState)
 
     const openInputFormHandler = () => {
         setOpenInputForm(true)
@@ -77,54 +71,46 @@ const CardTitle: React.FC<props> = memo(({ listId }) => {
     const closeInputFormHandler = () => {
         setOpenInputForm(false)
     }
-
-    const onAddNewCardHandler = (e: React.FormEvent) => {
+    const onChangeCardTitle = (e: React.FormEvent) => {
         e.preventDefault()
         if (!inputValue) return
-        const newCard = {
-            cardId: uuid(),
-            cardTitle: inputValue,
-            cardDescription: '',
-            cardData: [],
-        }
-        const currentBoardIndex: number = state.findIndex(
-            (board) => board.boardId === boardId
+        setOpenInputForm(false)
+        const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
+        const currentListIndex = state[currentBoardIndex].lists.findIndex(
+            (l) => l.listId === cardState.listId
         )
-        const currentListIndex: number = state[
-            currentBoardIndex
-        ].lists.findIndex((list) => list.listId === listId)
-
-        if (currentBoardIndex === -1 || currentListIndex === -1) return
+        const currentCardIndex = state[currentBoardIndex].lists[
+            currentListIndex
+        ].cards.findIndex((c) => c.cardId === cardState.cardId)
         setState(
             produce(state, (draftState) => {
-                draftState[currentBoardIndex].lists[
-                    currentListIndex
-                ].cards.push(newCard)
+                draftState[currentBoardIndex].lists[currentListIndex].cards[
+                    currentCardIndex
+                ].cardTitle = inputValue
             })
         )
-        setOpenInputForm(false)
         setInputValue('')
     }
 
     return (
         <>
             {!openInputForm && (
-                <StyledAddCard onClick={openInputFormHandler}>
-                    <HiOutlinePlus />
-                    <span>Add a card</span>
-                </StyledAddCard>
+                <StyledWrapper onClick={openInputFormHandler}>
+                    <BsCardChecklist />
+                    <StyledTitle>{currentCard.cardTitle}</StyledTitle>
+                </StyledWrapper>
             )}
             {openInputForm && (
-                <StyledInputForm onSubmit={onAddNewCardHandler}>
+                <StyledInputForm onSubmit={onChangeCardTitle}>
                     <StyledTextArea
-                        placeholder="Enter a title for this card..."
+                        placeholder="Change a title..."
                         autoFocus
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         maxLength={54}
                     />
                     <ButtonsWrapper>
-                        <SubmitButton>Add card</SubmitButton>
+                        <SubmitButton>Save</SubmitButton>
                         <CloseInputIcon onClick={closeInputFormHandler}>
                             <GrClose />
                         </CloseInputIcon>
@@ -133,6 +119,6 @@ const CardTitle: React.FC<props> = memo(({ listId }) => {
             )}
         </>
     )
-})
+}
 
-export default memo(CardTitle)
+export default CardTitleDescription

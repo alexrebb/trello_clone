@@ -9,6 +9,7 @@ import { useRecoilState } from 'recoil'
 import { BoardListState } from '../../store/atoms'
 
 import produce from 'immer'
+import { v4 as uuid } from 'uuid'
 
 const StyledNewBoard = styled.div`
     width: 90%;
@@ -83,12 +84,12 @@ const BoardsContainer: React.FC<props> = memo(({ onOpenSettingsMenu }) => {
             if (!inputValue.length) return
 
             const addBoard = {
-                boardId: Math.floor(Math.random() * 10000).toString(),
+                boardId: uuid(),
                 boardTitle: inputValue,
-                boardListId: Math.floor(Math.random() * 10000).toString(),
+                boardListId: uuid(),
                 lists: [
                     {
-                        listId: Math.floor(Math.random() * 10000).toString(),
+                        listId: uuid(),
                         listTitle: 'List',
                         cards: [],
                     },
@@ -127,7 +128,7 @@ const BoardsContainer: React.FC<props> = memo(({ onOpenSettingsMenu }) => {
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onBlur={onCloseOnBlur}
-                        maxLength={25}
+                        maxLength={20}
                     />
                     <ButtonsWrapper>
                         <SubmitButton>Add board</SubmitButton>

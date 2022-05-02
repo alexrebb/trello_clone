@@ -6,19 +6,19 @@ const StyledMenuContainer = styled.div`
     display: flex;
     flex-direction: column;
     background-color: rgba(241, 239, 239, 0.91);
-    width: 9%;
+    width: 200px;
     align-items: start;
     z-index: 1;
     padding: 10px;
 `
 
 interface props {
-    onOpenSettingsMenu: Function
+    isOnOpenSettingsMenu: Function
 }
-const Menu: React.FC<props> = memo(({ onOpenSettingsMenu }) => {
+const Menu: React.FC<props> = memo(({ isOnOpenSettingsMenu }) => {
     return (
         <StyledMenuContainer>
-            <BoardsContainer onOpenSettingsMenu={onOpenSettingsMenu} />
+            <BoardsContainer onOpenSettingsMenu={isOnOpenSettingsMenu} />
         </StyledMenuContainer>
     )
 })

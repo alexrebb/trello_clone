@@ -5,10 +5,11 @@ import { useState, memo, useCallback } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { BoardListState, BoardIdState } from '../../store/atoms'
 import produce from 'immer'
+import { v4 as uuid } from 'uuid'
 
 const StyledAddListContainer = styled.div`
     position: fixed;
-    left: 87.5%;
+    left: calc(100% - 210px);
     width: 170px;
     background-color: rgba(255, 248, 248, 0.849);
     border-radius: 3px;
@@ -54,7 +55,7 @@ const CloseInputIcon = styled.div`
     font-size: 15px;
     cursor: pointer;
 `
-const NewList = memo(() => {
+const AddNewList = memo(() => {
     const [openNewListInputForm, setOpenNewListInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [currentBoardState, setCurrentBoardState] =
@@ -78,7 +79,7 @@ const NewList = memo(() => {
             if (!inputValue.length) return
 
             const addList = {
-                listId: Math.floor(Math.random() * 10000).toString(),
+                listId: uuid(),
                 listTitle: inputValue,
                 cards: [],
             }
@@ -108,9 +109,11 @@ const NewList = memo(() => {
     return (
         <StyledAddListContainer>
             {!openNewListInputForm && (
-                <StyledAddList onClick={openNewListInputFormHandler}>
+                <StyledAddList>
                     <HiOutlinePlus />
-                    <span> Add another list</span>
+                    <span onClick={openNewListInputFormHandler}>
+                        Add another list
+                    </span>
                 </StyledAddList>
             )}
 
@@ -136,4 +139,4 @@ const NewList = memo(() => {
     )
 })
 
-export default memo(NewList)
+export default memo(AddNewList)

@@ -51,7 +51,8 @@ const StyledDescription = styled.div`
     border-radius: 3px;
     box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
     padding: 15px;
-    font-size: 12px;
+    font-size: 14px;
+    
     cursor: pointer;
     word-break: break-all;
     &:hover {

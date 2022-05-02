@@ -1,22 +1,21 @@
 import Lists from './Lists'
 import styled from 'styled-components'
-import NewList from './NewList'
+import AddNewList from './AddNewList'
 import { BoardListState, BoardIdState, userDevice } from '../../store/atoms'
 import { useEffect, memo, useCallback, useState } from 'react'
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
 import produce from 'immer'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
-import { DragState } from '../../types/interfaces'
+import { DragState } from '../../types'
 import ModalCard from '../Modal/ModalCard'
 
 const StyledListContainer = styled.div`
-    width: 90%;
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
     height: 100vh;
     padding: 10px 10px;
-    scrollbar-gutter: stable both-edges;
+    overflow: auto;
 `
 
 const ListContainer = memo(() => {
@@ -224,7 +223,7 @@ const ListContainer = memo(() => {
                         {...provided.droppableProps}
                     >
                         <Lists onOpenModal={onOpenModal} />
-                        <NewList />
+                        <AddNewList />
                         {provided.placeholder}
                     </StyledListContainer>
                 )}

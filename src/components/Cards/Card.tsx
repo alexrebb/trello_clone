@@ -21,6 +21,7 @@ const StyledCard = styled.div`
     margin: 5px 0;
     cursor: pointer;
     word-break: break-all;
+    z-index: 2;
     &:hover {
         background-color: rgb(235, 236, 240);
         ${StyledIcon} {

@@ -1,4 +1,4 @@
-import Layout from '../Layout/Layout'
+import Layout from '../Layout'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 
@@ -7,9 +7,9 @@ const StyledHomeContainer = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
 `
 const StyledTitle = styled.h1`
-    margin-top: 30vh;
     font-size: 70px;
 `
 const StyledButton = styled.button`
