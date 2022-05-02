@@ -1,6 +1,6 @@
 import BoardList from '../Boards/BoardList'
 import { memo, useState, useCallback } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 import { HiOutlinePlus } from 'react-icons/hi'
 import { GrClose } from 'react-icons/gr'

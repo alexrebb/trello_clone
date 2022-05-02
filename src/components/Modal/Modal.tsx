@@ -1,5 +1,5 @@
 import React, { memo, ReactChild } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 
 const StyledModal = styled.div`
     position: fixed;

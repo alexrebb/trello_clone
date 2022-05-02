@@ -1,5 +1,5 @@
 import Board from './Board'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { memo } from 'react'
 import { BoardListState } from '../../store/atoms'
 import { useRecoilValue } from 'recoil'

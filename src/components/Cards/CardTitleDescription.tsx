@@ -1,5 +1,5 @@
 import { BsCardChecklist } from 'react-icons/bs'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { useRecoilValue, useRecoilState } from 'recoil'
 import { filteredCardState } from '../../store/selectors'
 import { BoardIdState, BoardListState, CardIdState } from '../../store/atoms'

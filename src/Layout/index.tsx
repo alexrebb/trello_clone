@@ -1,5 +1,5 @@
 import { ReactChild } from 'react'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { filteredBoardsState } from '../store/selectors'

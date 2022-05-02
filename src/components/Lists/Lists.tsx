@@ -1,6 +1,6 @@
 import List from './List'
 import { Draggable } from 'react-beautiful-dnd'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { memo } from 'react'
 import { filteredBoardsState } from '../../store/selectors'
 import { useRecoilValue } from 'recoil'

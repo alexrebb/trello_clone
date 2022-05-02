@@ -1,5 +1,5 @@
 import Layout from '../Layout'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { useNavigate } from 'react-router-dom'
 
 const StyledHomeContainer = styled.div`

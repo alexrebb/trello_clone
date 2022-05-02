@@ -1,5 +1,5 @@
 import { GrClose } from 'react-icons/gr'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { memo, useState, useCallback } from 'react'
 import { useRecoilState } from 'recoil'
 import { BoardTitleState, BoardListState } from '../../store/atoms'

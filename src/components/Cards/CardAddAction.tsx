@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { CardData } from '../../types'
 import { BsJournalPlus } from 'react-icons/bs'
 import { MdOutlineDescription } from 'react-icons/md'

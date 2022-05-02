@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { HiOutlinePencil } from 'react-icons/hi'
 import { memo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'

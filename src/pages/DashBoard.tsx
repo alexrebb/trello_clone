@@ -1,6 +1,6 @@
 import Layout from '../Layout'
 import BoardSetting from '../components/Boards/BoardSetting'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import Menu from '../components/Menu/Menu'
 import ListContainer from '../components/Lists/ListsContainer'
 import { useState } from 'react'

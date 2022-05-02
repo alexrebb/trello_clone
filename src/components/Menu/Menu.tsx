@@ -1,5 +1,5 @@
 import BoardsContainer from '../Boards/BoardsContainer'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { memo } from 'react'
 
 const StyledMenuContainer = styled.div`

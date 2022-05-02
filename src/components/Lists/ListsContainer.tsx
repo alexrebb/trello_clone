@@ -1,5 +1,5 @@
 import Lists from './Lists'
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import AddNewList from './AddNewList'
 import { BoardListState, BoardIdState, userDevice } from '../../store/atoms'
 import { useEffect, memo, useCallback, useState } from 'react'

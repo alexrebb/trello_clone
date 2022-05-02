@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from 'styled-components/macro'
 import { MdMoreHoriz } from 'react-icons/md'
 import { useState, memo, useCallback } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
