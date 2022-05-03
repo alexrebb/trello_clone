@@ -65,17 +65,17 @@ interface props {
     listId: string
 }
 
-const CardTitle: React.FC<props> = memo(({ listId }) => {
-    const [openInputForm, setOpenInputForm] = useState(false)
+const CardTitle: React.FC<props> = ({ listId }) => {
+    const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [state, setState] = useRecoilState(BoardListState)
     const boardId = useRecoilValue(BoardIdState)
 
     const openInputFormHandler = () => {
-        setOpenInputForm(true)
+        setIsOpenInputForm(true)
     }
     const closeInputFormHandler = () => {
-        setOpenInputForm(false)
+        setIsOpenInputForm(false)
     }
 
     const onAddNewCardHandler = (e: React.FormEvent) => {
@@ -102,19 +102,19 @@ const CardTitle: React.FC<props> = memo(({ listId }) => {
                 ].cards.push(newCard)
             })
         )
-        setOpenInputForm(false)
+        setIsOpenInputForm(false)
         setInputValue('')
     }
 
     return (
         <>
-            {!openInputForm && (
+            {!isOpenInputForm && (
                 <StyledAddCard onClick={openInputFormHandler}>
                     <HiOutlinePlus />
                     <span>Add a card</span>
                 </StyledAddCard>
             )}
-            {openInputForm && (
+            {isOpenInputForm && (
                 <StyledInputForm onSubmit={onAddNewCardHandler}>
                     <StyledTextArea
                         placeholder="Enter a title for this card..."
@@ -133,6 +133,6 @@ const CardTitle: React.FC<props> = memo(({ listId }) => {
             )}
         </>
     )
-})
+}
 
 export default memo(CardTitle)

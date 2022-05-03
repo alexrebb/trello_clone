@@ -8,6 +8,7 @@ import produce from 'immer'
 const StyledListTitle = styled.div`
     font-weight: bold;
     cursor: pointer;
+    word-break: break-all;
 `
 const StiledTitleContainer = styled.div`
     display: flex;
@@ -67,25 +68,25 @@ interface props {
     listId: string
 }
 
-const ListTitle: React.FC<props> = memo(({ listTitle, listId }) => {
-    const [openInputTitle, setOpenInputTitle] = useState(false)
-    const [openRemoveList, setOpenRemoveList] = useState(false)
+const ListTitle: React.FC<props> = ({ listTitle, listId }) => {
+    const [isOpenInputTitle, setIsOpenInputTitle] = useState(false)
+    const [isOpenRemoveList, setOpenRemoveList] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [state, setState] = useRecoilState(BoardListState)
     const boardId = useRecoilValue(BoardIdState)
 
     const onOpenInputTitleHandler = () => {
-        setOpenInputTitle(true)
+        setIsOpenInputTitle(true)
     }
     const onOpenRemoveListHandler = () => {
-        setOpenRemoveList(!openRemoveList)
+        setOpenRemoveList(!isOpenRemoveList)
     }
     const onCloseRemoveListHandler = () => {
         setOpenRemoveList(false)
     }
 
     const onCloseInputTitleHandler = useCallback(() => {
-        setOpenInputTitle(false)
+        setIsOpenInputTitle(false)
         if (!inputValue) return
 
         const currentBoardIndex = state.findIndex(
@@ -120,12 +121,12 @@ const ListTitle: React.FC<props> = memo(({ listTitle, listId }) => {
     return (
         <StyledList>
             <StiledTitleContainer>
-                {!openInputTitle && (
+                {!isOpenInputTitle && (
                     <StyledListTitle onClick={onOpenInputTitleHandler}>
                         {listTitle}
                     </StyledListTitle>
                 )}
-                {openInputTitle && (
+                {isOpenInputTitle && (
                     <StyledInput
                         type="text"
                         onBlur={onCloseInputTitleHandler}
@@ -138,7 +139,7 @@ const ListTitle: React.FC<props> = memo(({ listTitle, listId }) => {
                     <MdMoreHoriz />
                 </StyledIcon>
             </StiledTitleContainer>
-            {openRemoveList && (
+            {isOpenRemoveList && (
                 <StyledRemoveList>
                     <SryleRemoveList>Remove List?</SryleRemoveList>
                     <div>
@@ -151,6 +152,6 @@ const ListTitle: React.FC<props> = memo(({ listTitle, listId }) => {
             )}
         </StyledList>
     )
-})
+}
 
 export default memo(ListTitle)

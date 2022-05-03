@@ -32,6 +32,7 @@ const StyledInput = styled.input`
     border-radius: 3px;
     border: none;
     font-size: 15px;
+    word-break: break-all;
 `
 const ButtonsWrapper = styled.div`
     display: flex;
@@ -55,22 +56,22 @@ const CloseInputIcon = styled.div`
     font-size: 15px;
     cursor: pointer;
 `
-const AddNewList = memo(() => {
-    const [openNewListInputForm, setOpenNewListInputForm] = useState(false)
+const AddNewList = () => {
+    const [isOpenNewListInputForm, setIsOpenNewListInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [currentBoardState, setCurrentBoardState] =
         useRecoilState(BoardListState)
     const currentBoardId = useRecoilValue(BoardIdState)
 
     const openNewListInputFormHandler = () => {
-        setOpenNewListInputForm(true)
+        setIsOpenNewListInputForm(true)
     }
     const closeNewListInputFormHandler = () => {
-        setOpenNewListInputForm(false)
+        setIsOpenNewListInputForm(false)
     }
     const onCloseOnBlur = (e: any): void => {
         if (e.relatedTarget !== null) return
-        setOpenNewListInputForm(false)
+        setIsOpenNewListInputForm(false)
     }
 
     const onSubmitHandler = useCallback(
@@ -100,7 +101,7 @@ const AddNewList = memo(() => {
                 })
             )
 
-            setOpenNewListInputForm(false)
+            setIsOpenNewListInputForm(false)
             setInputValue('')
         },
         [inputValue, currentBoardId, currentBoardState, setCurrentBoardState]
@@ -108,7 +109,7 @@ const AddNewList = memo(() => {
 
     return (
         <StyledAddListContainer>
-            {!openNewListInputForm && (
+            {!isOpenNewListInputForm && (
                 <StyledAddList>
                     <HiOutlinePlus />
                     <span onClick={openNewListInputFormHandler}>
@@ -117,7 +118,7 @@ const AddNewList = memo(() => {
                 </StyledAddList>
             )}
 
-            {openNewListInputForm && (
+            {isOpenNewListInputForm && (
                 <StyledForm onSubmit={onSubmitHandler}>
                     <StyledInput
                         placeholder="Enter a list title..."
@@ -125,7 +126,6 @@ const AddNewList = memo(() => {
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onBlur={onCloseOnBlur}
-                        maxLength={25}
                     />
                     <ButtonsWrapper>
                         <SubmitButton>Add list</SubmitButton>
@@ -137,6 +137,6 @@ const AddNewList = memo(() => {
             )}
         </StyledAddListContainer>
     )
-})
+}
 
 export default memo(AddNewList)

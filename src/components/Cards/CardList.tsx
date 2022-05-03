@@ -17,7 +17,7 @@ interface props {
     listId: string
 }
 
-const CardList: React.FC<props> = memo(({ onOpenModal, cards, listId }) => {
+const CardList: React.FC<props> = ({ onOpenModal, cards, listId }) => {
     return (
         <Droppable droppableId={listId}>
             {(provided) => (
@@ -42,6 +42,6 @@ const CardList: React.FC<props> = memo(({ onOpenModal, cards, listId }) => {
             )}
         </Droppable>
     )
-})
+}
 
 export default memo(CardList)

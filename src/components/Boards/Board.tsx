@@ -5,7 +5,7 @@ import { useSetRecoilState } from 'recoil'
 import { BoardIdState, BoardTitleState } from '../../store/atoms'
 
 const StyledBoardContainer = styled.div`
-    width: 100%;
+    width: 180px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -18,8 +18,9 @@ const StyledBoardContainer = styled.div`
     }
 `
 const StyledBoard = styled.div`
-    width: 100%;
+    width: 180px;
     border-radius: 7px;
+    word-break: break-all;
     cursor: pointer;
     &:hover {
         ${StyledBoardContainer} {
@@ -49,35 +50,35 @@ interface props {
     boardTitle: string
 }
 
-const Board: React.FC<props> = memo(
-    ({ onOpenSettingsMenu, boardId, boardTitle }) => {
-        const setBoardIdState = useSetRecoilState(BoardIdState)
-        const setBoardTitleState = useSetRecoilState(BoardTitleState)
+const Board: React.FC<props> = ({
+    onOpenSettingsMenu,
+    boardId,
+    boardTitle,
+}) => {
+    const setBoardIdState = useSetRecoilState(BoardIdState)
+    const setBoardTitleState = useSetRecoilState(BoardTitleState)
 
-        const onOpenSettingsMenuHandler = () => {
-            onOpenSettingsMenu()
-            const boardState = {
-                boardId: boardId,
-                boardTitle: boardTitle,
-            }
-            setBoardTitleState(boardState)
+    const onOpenSettingsMenuHandler = () => {
+        onOpenSettingsMenu()
+        const boardState = {
+            boardId: boardId,
+            boardTitle: boardTitle,
         }
-
-        const onClickHandleBoard = () => {
-            setBoardIdState(boardId)
-        }
-
-        return (
-            <StyledBoardContainer>
-                <StyledBoard onClick={onClickHandleBoard}>
-                    {boardTitle}
-                </StyledBoard>
-                <StyledIcon onClick={onOpenSettingsMenuHandler}>
-                    <VscSettingsGear />
-                </StyledIcon>
-            </StyledBoardContainer>
-        )
+        setBoardTitleState(boardState)
     }
-)
+
+    const onClickHandleBoard = () => {
+        setBoardIdState(boardId)
+    }
+
+    return (
+        <StyledBoardContainer>
+            <StyledBoard onClick={onClickHandleBoard}>{boardTitle}</StyledBoard>
+            <StyledIcon onClick={onOpenSettingsMenuHandler}>
+                <VscSettingsGear />
+            </StyledIcon>
+        </StyledBoardContainer>
+    )
+}
 
 export default memo(Board)

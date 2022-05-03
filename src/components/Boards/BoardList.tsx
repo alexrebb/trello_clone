@@ -13,7 +13,7 @@ interface props {
     onOpenSettingsMenu: Function
 }
 
-const BoardList: React.FC<props> = memo(({ onOpenSettingsMenu }) => {
+const BoardList: React.FC<props> = ({ onOpenSettingsMenu }) => {
     const boardList = useRecoilValue(BoardListState)
 
     return (
@@ -30,6 +30,6 @@ const BoardList: React.FC<props> = memo(({ onOpenSettingsMenu }) => {
             })}
         </StyledBoardList>
     )
-})
+}
 
 export default memo(BoardList)

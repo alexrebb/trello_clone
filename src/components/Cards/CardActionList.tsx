@@ -5,7 +5,7 @@ import { memo } from 'react'
 interface props {
     cardState: Cards
 }
-const CardActionList: React.FC<props> = memo(({ cardState }) => {
+const CardActionList: React.FC<props> = ({ cardState }) => {
     return (
         <>
             {cardState.cardData?.map((data) => (
@@ -17,6 +17,6 @@ const CardActionList: React.FC<props> = memo(({ cardState }) => {
             ))}
         </>
     )
-})
+}
 
 export default memo(CardActionList)

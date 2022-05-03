@@ -3,7 +3,7 @@ import styled from 'styled-components/macro'
 import { useRecoilValue, useRecoilState } from 'recoil'
 import { filteredCardState } from '../../store/selectors'
 import { BoardIdState, BoardListState, CardIdState } from '../../store/atoms'
-import { useState } from 'react'
+import { useState, memo } from 'react'
 import { GrClose } from 'react-icons/gr'
 import produce from 'immer'
 
@@ -58,7 +58,7 @@ const CloseInputIcon = styled.span`
 `
 
 const CardTitleDescription = () => {
-    const [openInputForm, setOpenInputForm] = useState(false)
+    const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const currentCard = useRecoilValue(filteredCardState)
     const [inputValue, setInputValue] = useState('')
     const [state, setState] = useRecoilState(BoardListState)
@@ -66,15 +66,15 @@ const CardTitleDescription = () => {
     const cardState = useRecoilValue(CardIdState)
 
     const openInputFormHandler = () => {
-        setOpenInputForm(true)
+        setIsOpenInputForm(true)
     }
     const closeInputFormHandler = () => {
-        setOpenInputForm(false)
+        setIsOpenInputForm(false)
     }
     const onChangeCardTitle = (e: React.FormEvent) => {
         e.preventDefault()
         if (!inputValue) return
-        setOpenInputForm(false)
+        setIsOpenInputForm(false)
         const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
         const currentListIndex = state[currentBoardIndex].lists.findIndex(
             (l) => l.listId === cardState.listId
@@ -94,13 +94,13 @@ const CardTitleDescription = () => {
 
     return (
         <>
-            {!openInputForm && (
+            {!isOpenInputForm && (
                 <StyledWrapper onClick={openInputFormHandler}>
                     <BsCardChecklist />
                     <StyledTitle>{currentCard.cardTitle}</StyledTitle>
                 </StyledWrapper>
             )}
-            {openInputForm && (
+            {isOpenInputForm && (
                 <StyledInputForm onSubmit={onChangeCardTitle}>
                     <StyledTextArea
                         placeholder="Change a title..."
@@ -121,4 +121,4 @@ const CardTitleDescription = () => {
     )
 }
 
-export default CardTitleDescription
+export default memo(CardTitleDescription)
