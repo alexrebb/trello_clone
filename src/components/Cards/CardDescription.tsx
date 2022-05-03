@@ -63,23 +63,23 @@ interface props {
     cardDescription: string
 }
 
-const CardDescription: React.FC<props> = memo(({ cardDescription }) => {
-    const [openInputForm, setOpenInputForm] = useState(false)
+const CardDescription: React.FC<props> = ({ cardDescription }) => {
+    const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [state, setState] = useRecoilState(BoardListState)
     const cardState = useRecoilValue(CardIdState)
     const boardId = useRecoilValue(BoardIdState)
 
     const openInputFormHandler = () => {
-        setOpenInputForm(true)
+        setIsOpenInputForm(true)
     }
     const closeInputFormHandler = () => {
-        setOpenInputForm(false)
+        setIsOpenInputForm(false)
     }
     const onChangeCardDescription = (e: React.FormEvent) => {
         e.preventDefault()
         if (!inputValue) return
-        setOpenInputForm(false)
+        setIsOpenInputForm(false)
         const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
         const currentListIndex = state[currentBoardIndex].lists.findIndex(
             (l) => l.listId === cardState.listId
@@ -99,14 +99,14 @@ const CardDescription: React.FC<props> = memo(({ cardDescription }) => {
 
     return (
         <>
-            {!openInputForm && (
+            {!isOpenInputForm && (
                 <StyledDescription onClick={openInputFormHandler}>
                     {cardDescription
                         ? cardDescription
                         : 'Add a more deteiled description...'}
                 </StyledDescription>
             )}
-            {openInputForm && (
+            {isOpenInputForm && (
                 <StyledInputForm onSubmit={onChangeCardDescription}>
                     <StyledTextArea
                         placeholder="Add a more deteiled description..."
@@ -125,6 +125,6 @@ const CardDescription: React.FC<props> = memo(({ cardDescription }) => {
             )}
         </>
     )
-})
+}
 
 export default memo(CardDescription)

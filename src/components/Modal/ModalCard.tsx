@@ -29,7 +29,7 @@ interface props {
     onCloseModal: Function
 }
 
-const ModalCard: React.FC<props> = memo(({ onCloseModal }) => {
+const ModalCard: React.FC<props> = ({ onCloseModal }) => {
     const cardState = useRecoilValue(filteredCardState)
 
     return (
@@ -46,6 +46,6 @@ const ModalCard: React.FC<props> = memo(({ onCloseModal }) => {
             </StyledModalContainer>
         </Modal>
     )
-})
+}
 
 export default memo(ModalCard)

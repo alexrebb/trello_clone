@@ -10,20 +10,14 @@ interface props {
     cards: Array<Cards>
     listId: string
 }
-const List: React.FC<props> = memo(
-    ({ onOpenModal, listTitle, cards, listId }) => {
-        return (
-            <div>
-                <ListTitle listTitle={listTitle} listId={listId} />
-                <CardList
-                    onOpenModal={onOpenModal}
-                    cards={cards}
-                    listId={listId}
-                />
-                <CardTitle listId={listId} />
-            </div>
-        )
-    }
-)
+const List: React.FC<props> = ({ onOpenModal, listTitle, cards, listId }) => {
+    return (
+        <div>
+            <ListTitle listTitle={listTitle} listId={listId} />
+            <CardList onOpenModal={onOpenModal} cards={cards} listId={listId} />
+            <CardTitle listId={listId} />
+        </div>
+    )
+}
 
 export default memo(List)

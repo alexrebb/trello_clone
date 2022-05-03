@@ -31,7 +31,7 @@ interface props {
     date: string
 }
 
-const CardAction: React.FC<props> = memo(({ action, date }) => {
+const CardAction: React.FC<props> = ({ action, date }) => {
     return (
         <StyledDescription>
             <StyledActionWrapper>
@@ -40,6 +40,6 @@ const CardAction: React.FC<props> = memo(({ action, date }) => {
             </StyledActionWrapper>
         </StyledDescription>
     )
-})
+}
 
 export default memo(CardAction)

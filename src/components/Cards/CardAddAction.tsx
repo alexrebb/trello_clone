@@ -72,17 +72,17 @@ const CloseInputIcon = styled.span`
 `
 
 const CardAddAction = () => {
-    const [openInputForm, setOpenInputForm] = useState(false)
+    const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [state, setState] = useRecoilState(BoardListState)
     const boardId = useRecoilValue(BoardIdState)
     const cardState = useRecoilValue(CardIdState)
 
     const closeInputFormHandler = () => {
-        setOpenInputForm(false)
+        setIsOpenInputForm(false)
     }
     const onOpenInputFormHandler = () => {
-        setOpenInputForm(true)
+        setIsOpenInputForm(true)
     }
 
     const displayDateWithTime = moment().format('LLLL')
@@ -90,7 +90,7 @@ const CardAddAction = () => {
     const onAddCardAction = (e: React.FormEvent) => {
         e.preventDefault()
         if (!inputValue) return
-        setOpenInputForm(false)
+        setIsOpenInputForm(false)
         const newAction: CardData = {
             cardDataId: uuid(),
             action: inputValue,
@@ -122,14 +122,13 @@ const CardAddAction = () => {
                     <BsJournalPlus />
                 </StyledIconPlus>
             </StyledWrapper>
-            {openInputForm && (
+            {isOpenInputForm && (
                 <StyledInputForm onSubmit={onAddCardAction}>
                     <StyledTextArea
                         placeholder="Write a comment..."
                         autoFocus
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        maxLength={300}
                     />
                     <ButtonsWrapper>
                         <SubmitButton>Save</SubmitButton>

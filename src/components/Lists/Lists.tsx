@@ -21,7 +21,7 @@ interface props {
     onOpenModal: Function
 }
 
-const Lists: React.FC<props> = memo(({ onOpenModal }) => {
+const Lists: React.FC<props> = ({ onOpenModal }) => {
     const currentBoard = useRecoilValue(filteredBoardsState)
 
     return (
@@ -51,6 +51,6 @@ const Lists: React.FC<props> = memo(({ onOpenModal }) => {
             ))}
         </>
     )
-})
+}
 
 export default memo(Lists)

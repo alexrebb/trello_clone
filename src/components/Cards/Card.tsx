@@ -47,60 +47,63 @@ interface props {
     index: number
 }
 
-const Card: React.FC<props> = memo(
-    ({ onOpenModal, cardTitle, cardId, index, listId }) => {
-        const setCardId = useSetRecoilState(CardIdState)
-        const state = useRecoilValue(BoardListState)
-        const boardId = useRecoilValue(BoardIdState)
+const Card: React.FC<props> = ({
+    onOpenModal,
+    cardTitle,
+    cardId,
+    index,
+    listId,
+}) => {
+    const setCardId = useSetRecoilState(CardIdState)
+    const state = useRecoilValue(BoardListState)
+    const boardId = useRecoilValue(BoardIdState)
 
-        const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
-        const currentListIndex = state[currentBoardIndex].lists.findIndex(
-            (l) => l.listId === listId
-        )
-        const currentCardIndex = state[currentBoardIndex].lists[
-            currentListIndex
-        ].cards.findIndex((c) => c.cardId === cardId)
+    const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
+    const currentListIndex = state[currentBoardIndex].lists.findIndex(
+        (l) => l.listId === listId
+    )
+    const currentCardIndex = state[currentBoardIndex].lists[
+        currentListIndex
+    ].cards.findIndex((c) => c.cardId === cardId)
 
-        const cardActionAmount =
-            state[currentBoardIndex].lists[currentListIndex].cards[
-                currentCardIndex
-            ].cardData.length
+    const cardActionAmount =
+        state[currentBoardIndex].lists[currentListIndex].cards[currentCardIndex]
+            .cardData.length
 
-        const handleClick = () => {
-            onOpenModal()
-            setCardId({
-                cardId: cardId,
-                listId: listId,
-            })
-        }
-
-        return (
-            <Draggable draggableId={cardId} index={index}>
-                {(provided) => (
-                    <StyledCard
-                        onClick={handleClick}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                        ref={provided.innerRef}
-                    >
-                        <span>{cardTitle}</span>
-                        <StyledIconsWrapper>
-                            <StyledIcon>
-                                <HiOutlinePencil />
-                            </StyledIcon>
-                            {cardActionAmount ? (
-                                <StyledActionAmountWrapper>
-                                    {cardActionAmount} <FaRegCommentDots />
-                                </StyledActionAmountWrapper>
-                            ) : (
-                                <></>
-                            )}
-                        </StyledIconsWrapper>
-                    </StyledCard>
-                )}
-            </Draggable>
-        )
+    const handleClick = () => {
+        onOpenModal()
+        setCardId({
+            cardId: cardId,
+            listId: listId,
+        })
     }
-)
+
+    return (
+        <Draggable draggableId={cardId} index={index}>
+            {(provided) => (
+                <StyledCard
+                    onClick={handleClick}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    ref={provided.innerRef}
+                >
+                    <span>{cardTitle}</span>
+                    <StyledIconsWrapper>
+                        <StyledIcon>
+                            <HiOutlinePencil />
+                        </StyledIcon>
+                        {cardActionAmount ? (
+                            <StyledActionAmountWrapper>
+                                {cardActionAmount} <FaRegCommentDots />
+                            </StyledActionAmountWrapper>
+                        ) : (
+                            <></>
+                        )}
+                    </StyledIconsWrapper>
+                </StyledCard>
+            )}
+        </Draggable>
+    )
+}
 
 export default memo(Card)

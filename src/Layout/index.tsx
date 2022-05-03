@@ -7,7 +7,6 @@ import { filteredBoardsState } from '../store/selectors'
 const Overlay = styled.div`
     display: flex;
     flex-flow: column;
-    align-items: stretch;
     width: 100%;
     height: 100%;
 `
