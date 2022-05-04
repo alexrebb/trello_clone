@@ -1,9 +1,9 @@
 import Lists from './Lists'
 import styled from 'styled-components/macro'
 import AddNewList from './AddNewList'
-import { BoardListState, BoardIdState, userDevice } from '../../store/atoms'
-import { useEffect, memo, useCallback, useState } from 'react'
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil'
+import { BoardListState, BoardIdState } from '../../store/atoms'
+import { memo, useCallback, useState } from 'react'
+import { useRecoilState, useRecoilValue } from 'recoil'
 import produce from 'immer'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { DragState } from '../../types'
@@ -13,47 +13,20 @@ const StyledListContainer = styled.div`
     display: flex;
     justify-content: flex-start;
     align-items: flex-start;
-    height: 100vh;
     padding: 10px 10px;
-    overflow: auto;
 `
 
-const ListContainer = memo(() => {
-    const [showModal, setShowModal] = useState(false)
+const ListContainer = () => {
+    const [isOpenModal, setIsOpenModal] = useState(false)
     const [state, setState] = useRecoilState(BoardListState)
     const boardId = useRecoilValue(BoardIdState)
-    const setUserDevice = useSetRecoilState(userDevice)
 
     const onOpenModal = () => {
-        setShowModal(true)
+        setIsOpenModal(true)
     }
     const onCloseModal = () => {
-        setShowModal(false)
+        setIsOpenModal(false)
     }
-
-    useEffect(() => {
-        if (
-            /Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(
-                navigator.userAgent
-            )
-        ) {
-            setUserDevice('Mobile')
-        }
-
-        if (localStorage.length === 0) return
-        try {
-            setState(
-                produce(state, (draftState) => {
-                    draftState = JSON.parse(
-                        `${localStorage.getItem('boardsList')}`
-                    )
-                    return draftState
-                })
-            )
-        } catch (error) {
-            return
-        }
-    }, [])
 
     const dragInApp = useCallback(
         (dragState: DragState) => {
@@ -210,10 +183,10 @@ const ListContainer = memo(() => {
         [dragInApp, dragInnBoard, dragOverBoard]
     )
 
-    useEffect(() => {
-        localStorage.setItem('boardsList', JSON.stringify(state))
-    }, [state])
-
+    // Подумай над тем чтобы ModalCard ренедрить по месту вызова, а не в этой верхнеуровней комопненте.
+    // Тогда не надо будет 
+    // 1) isOpenModal куда-то тянуть через recoil
+    // 2) Вызывать перереднер всех списков
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="app" type="list" direction="horizontal">
@@ -228,9 +201,9 @@ const ListContainer = memo(() => {
                     </StyledListContainer>
                 )}
             </Droppable>
-            {showModal && <ModalCard onCloseModal={onCloseModal} />}
+            {isOpenModal && <ModalCard onCloseModal={onCloseModal} />}
         </DragDropContext>
     )
-})
+}
 
 export default memo(ListContainer)

@@ -15,12 +15,12 @@ const StyledMenuContainer = styled.div`
 interface props {
     isOnOpenSettingsMenu: Function
 }
-const Menu: React.FC<props> = memo(({ isOnOpenSettingsMenu }) => {
+const Menu: React.FC<props> = ({ isOnOpenSettingsMenu }) => {
     return (
         <StyledMenuContainer>
             <BoardsContainer onOpenSettingsMenu={isOnOpenSettingsMenu} />
         </StyledMenuContainer>
     )
-})
+}
 
 export default memo(Menu)

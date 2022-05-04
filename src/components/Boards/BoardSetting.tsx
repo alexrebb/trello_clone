@@ -62,6 +62,7 @@ const StyledRemoveList = styled.div`
 const StyledListTitle = styled.div`
     font-weight: bold;
     cursor: pointer;
+    word-break: break-all;
 `
 const StyledIcon = styled.div`
     font-size: 20px;
@@ -72,9 +73,11 @@ const StyledSpan = styled.span`
     text-transform: uppercase;
 `
 const StyledInput = styled.input`
-    width: 100%;
+    width: 180px;
     border-radius: 3px;
+    word-break: break-all;
     box-shadow: 0 1px 0 rgba(9, 30, 66, 0.25);
+    word-break: break-all;
     border: none;
     &:focus {
         outline: none;
@@ -97,29 +100,29 @@ interface props {
     isOnCloseSettingsMenu: Function
 }
 
-const BoardSetting: React.FC<props> = memo(({ isOnCloseSettingsMenu }) => {
-    const [openInputTitle, setOpenInputTitle] = useState(false)
-    const [openRemoveList, setOpenRemoveList] = useState(false)
+const BoardSetting: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
+    const [isOpenInputTitle, setIsOpenInputTitle] = useState(false)
+    const [isOpenRemoveList, setIsOpenRemoveList] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [boardTitleState, setBoardTitleState]: any =
         useRecoilState(BoardTitleState)
     const [state, setState] = useRecoilState(BoardListState)
 
     const onOpenInputTitleHandler = () => {
-        setOpenInputTitle(true)
+        setIsOpenInputTitle(true)
     }
     const onCloseSettingsMenuHandler = () => {
         isOnCloseSettingsMenu()
     }
     const onCloseRemoveBoardHandler = () => {
-        setOpenRemoveList(false)
+        setIsOpenRemoveList(false)
     }
     const onOpenRemoveListHandler = () => {
-        setOpenRemoveList(!openRemoveList)
+        setIsOpenRemoveList(!isOpenRemoveList)
     }
 
     const onChangeTitleHandler = useCallback(() => {
-        setOpenInputTitle(false)
+        setIsOpenInputTitle(false)
         if (!inputValue) return
 
         const currentBoardIndex = state.findIndex(
@@ -159,12 +162,12 @@ const BoardSetting: React.FC<props> = memo(({ isOnCloseSettingsMenu }) => {
     return (
         <StyledSettingsMenu>
             <StyledTitleWrapper>
-                {!openInputTitle && (
+                {!isOpenInputTitle && (
                     <StyledListTitle onClick={onOpenInputTitleHandler}>
                         {boardTitleState.boardTitle}
                     </StyledListTitle>
                 )}
-                {openInputTitle && (
+                {isOpenInputTitle && (
                     <StyledInput
                         type="text"
                         onBlur={onChangeTitleHandler}
@@ -182,7 +185,7 @@ const BoardSetting: React.FC<props> = memo(({ isOnCloseSettingsMenu }) => {
                     </StyledCloseIcon>
                 </StyledIconsWrapper>
             </StyledTitleWrapper>
-            {openRemoveList && (
+            {isOpenRemoveList && (
                 <StyledRemoveList>
                     <StyledSpan>Remove Board?</StyledSpan>
                     <div>
@@ -200,6 +203,6 @@ const BoardSetting: React.FC<props> = memo(({ isOnCloseSettingsMenu }) => {
             <div>Выбрать фон</div>
         </StyledSettingsMenu>
     )
-})
+}
 
 export default memo(BoardSetting)

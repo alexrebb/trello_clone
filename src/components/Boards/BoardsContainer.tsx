@@ -12,7 +12,7 @@ import produce from 'immer'
 import { v4 as uuid } from 'uuid'
 
 const StyledNewBoard = styled.div`
-    width: 90%;
+    width: 180px;
     font-size: 15px;
     background-color: rgba(255, 248, 248, 0.849);
     border-radius: 3px;
@@ -62,21 +62,22 @@ interface props {
     onOpenSettingsMenu: Function
 }
 
-const BoardsContainer: React.FC<props> = memo(({ onOpenSettingsMenu }) => {
-    const [openNewBoardInputForm, setOpenNewBoardInputForm] = useState(false)
+const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
+    const [isOpenNewBoardInputForm, setIsOpenNewBoardInputForm] =
+        useState(false)
     const [inputValue, setInputValue] = useState('')
     const [currentBoardState, setCurrentBoardState] =
         useRecoilState(BoardListState)
 
     const openNewBoardInputFormHandler = () => {
-        setOpenNewBoardInputForm(true)
+        setIsOpenNewBoardInputForm(true)
     }
     const closeNewBoardInputFormHandler = () => {
-        setOpenNewBoardInputForm(false)
+        setIsOpenNewBoardInputForm(false)
     }
     const onCloseOnBlur = (e: any): void => {
         if (e.relatedTarget !== null) return
-        setOpenNewBoardInputForm(false)
+        setIsOpenNewBoardInputForm(false)
     }
     const onSubmitHandler = useCallback(
         (e: React.FormEvent) => {
@@ -104,7 +105,7 @@ const BoardsContainer: React.FC<props> = memo(({ onOpenSettingsMenu }) => {
                 })
             )
 
-            setOpenNewBoardInputForm(false)
+            setIsOpenNewBoardInputForm(false)
             setInputValue('')
         },
         [currentBoardState, inputValue, setCurrentBoardState]
@@ -114,13 +115,13 @@ const BoardsContainer: React.FC<props> = memo(({ onOpenSettingsMenu }) => {
         <>
             <h4>Your boards</h4>
             <BoardList onOpenSettingsMenu={onOpenSettingsMenu} />
-            {!openNewBoardInputForm && (
+            {!isOpenNewBoardInputForm && (
                 <StyledNewBoard onClick={openNewBoardInputFormHandler}>
                     <HiOutlinePlus />
                     <span>New board</span>
                 </StyledNewBoard>
             )}
-            {openNewBoardInputForm && (
+            {isOpenNewBoardInputForm && (
                 <StyledForm onSubmit={onSubmitHandler}>
                     <StyledInput
                         placeholder="Enter a board title..."
@@ -140,6 +141,6 @@ const BoardsContainer: React.FC<props> = memo(({ onOpenSettingsMenu }) => {
             )}
         </>
     )
-})
+}
 
 export default memo(BoardsContainer)

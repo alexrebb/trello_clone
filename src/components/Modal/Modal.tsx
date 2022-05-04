@@ -61,13 +61,13 @@ interface ModalProps {
     onCloseModal: Function
 }
 
-const Modal: React.FC<ModalProps> = memo(({ onCloseModal, children }) => {
+const Modal: React.FC<ModalProps> = ({ onCloseModal, children }) => {
     return (
         <div>
             <Backdrop onCloseModal={onCloseModal} />,
             <ModalWindow>{children}</ModalWindow>,
         </div>
     )
-})
+}
 
 export default memo(Modal)

@@ -12,23 +12,23 @@ export const USER = {
 
 export const BOARDLIST = [
     {
-        boardListId: '111',
-        boardId: '121',
-        boardTitle: 'Board',
+        boardListId: '1',
+        boardId: '',
+        boardTitle: '',
         lists: [
             {
-                listId: '131',
-                listTitle: 'List',
+                listId: '2',
+                listTitle: '',
                 cards: [
                     {
-                        cardId: '141',
-                        cardTitle: 'Card',
+                        cardId: '3',
+                        cardTitle: '',
                         cardDescription: '',
                         cardData: [
                             {
-                                cardDataId: '151',
-                                action: 'First comment',
-                                date: displayDateWithTime,
+                                cardDataId: '4',
+                                action: '',
+                                date: '',
                             },
                         ],
                     },
