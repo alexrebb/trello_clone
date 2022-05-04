@@ -55,9 +55,11 @@ const Card: React.FC<props> = ({
     listId,
 }) => {
     const setCardId = useSetRecoilState(CardIdState)
+    // если переименовать в boardList, дальнейших код понимать станет сильно проще
     const state = useRecoilValue(BoardListState)
     const boardId = useRecoilValue(BoardIdState)
 
+    // Если здесь сразу сформировать currentBoardLists, дальнейшй код станет удобнее писать и читать
     const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
     const currentListIndex = state[currentBoardIndex].lists.findIndex(
         (l) => l.listId === listId

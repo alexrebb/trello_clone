@@ -183,6 +183,10 @@ const ListContainer = () => {
         [dragInApp, dragInnBoard, dragOverBoard]
     )
 
+    // Подумай над тем чтобы ModalCard ренедрить по месту вызова, а не в этой верхнеуровней комопненте.
+    // Тогда не надо будет 
+    // 1) isOpenModal куда-то тянуть через recoil
+    // 2) Вызывать перереднер всех списков
     return (
         <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="app" type="list" direction="horizontal">

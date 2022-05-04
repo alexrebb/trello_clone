@@ -6,6 +6,7 @@ import ListContainer from '../components/Lists/ListsContainer'
 import { useState, useEffect } from 'react'
 import { BoardListState, userDevice } from '../store/atoms'
 import { useSetRecoilState } from 'recoil'
+// А чем fetch не устраивает, зачем ради запроса axios в сборку добавлять?
 import axios from 'axios'
 
 const StyledDashBoardContainer = styled.div`
@@ -28,6 +29,8 @@ const DashBoard = () => {
 
     const getBoardList = async () => {
         try {
+            // Советую почитать https://nordicapis.com/10-best-practices-for-naming-api-endpoints/
+            // здесь /get-board-list
             const response = await axios.get('http://localhost:8000/boardlist')
 
             setState(response.data)
