@@ -1,5 +1,8 @@
 import { atom } from 'recoil'
-import { BOARDLIST } from './data'
+// import { BOARDLIST } from './data'
+import { BoardList } from '../types'
+
+const BOARDLIST: BoardList[] = []
 
 export const BoardListState = atom({
     key: 'BoardListState',
@@ -8,7 +11,7 @@ export const BoardListState = atom({
 
 export const BoardIdState = atom({
     key: 'BoardIdState',
-    default: BOARDLIST[0].boardId,
+    default: '',
 })
 
 export const BoardTitleState = atom({
@@ -30,4 +33,9 @@ export const CardIdState = atom({
         cardId: '',
         listId: '',
     },
+})
+
+export const isOpenModalState = atom({
+    key: 'isOpenModal',
+    default: false,
 })

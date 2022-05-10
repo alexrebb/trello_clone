@@ -6,8 +6,11 @@ export const filteredBoardsState = selector({
     get: ({ get }) => {
         const boardId = get(BoardIdState)
         const state = get(BoardListState)
+        if (boardId === '') {
+            return
+        }
 
-        return state.find((item) => item.boardId === boardId)
+        return state.find((item: any) => item.boardId === boardId)
     },
 })
 
@@ -18,13 +21,15 @@ export const filteredCardState = selector({
         const boardId = get(BoardIdState)
         const cardState = get(CardIdState)
 
-        const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
+        const currentBoardIndex = state.findIndex(
+            (b: any) => b.boardId === boardId
+        )
         const currentListIndex = state[currentBoardIndex].lists.findIndex(
-            (l) => l.listId === cardState.listId
+            (l: any) => l.listId === cardState.listId
         )
         const currentCardIndex = state[currentBoardIndex].lists[
             currentListIndex
-        ].cards.findIndex((c) => c.cardId === cardState.cardId)
+        ].cards.findIndex((c: any) => c.cardId === cardState.cardId)
 
         return state[currentBoardIndex].lists[currentListIndex].cards[
             currentCardIndex

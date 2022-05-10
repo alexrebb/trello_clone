@@ -3,8 +3,14 @@ import { HiOutlinePencil } from 'react-icons/hi'
 import { memo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { useSetRecoilState, useRecoilValue } from 'recoil'
-import { CardIdState, BoardListState, BoardIdState } from '../../store/atoms'
+import {
+    CardIdState,
+    BoardListState,
+    BoardIdState,
+    isOpenModalState,
+} from '../../store/atoms'
 import { FaRegCommentDots } from 'react-icons/fa'
+import { List, Cards, BoardList } from '../../types'
 
 const StyledIcon = styled.span`
     color: rgba(128, 128, 128, 0.9);
@@ -40,38 +46,31 @@ const StyledActionAmountWrapper = styled.div`
 `
 
 interface props {
-    onOpenModal: Function
     cardTitle: string
     cardId: string
     listId: string
     index: number
 }
 
-const Card: React.FC<props> = ({
-    onOpenModal,
-    cardTitle,
-    cardId,
-    index,
-    listId,
-}) => {
+const Card: React.FC<props> = ({ cardTitle, cardId, index, listId }) => {
     const setCardId = useSetRecoilState(CardIdState)
-    const state = useRecoilValue(BoardListState)
+    const boardList = useRecoilValue(BoardListState)
     const boardId = useRecoilValue(BoardIdState)
+    const setIsOpemModal = useSetRecoilState(isOpenModalState)
 
-    const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
-    const currentListIndex = state[currentBoardIndex].lists.findIndex(
+    const currentBoardList: BoardList | undefined = boardList?.find(
+        (b) => b.boardId === boardId
+    )
+    const currentList: List | undefined = currentBoardList?.lists.find(
         (l) => l.listId === listId
     )
-    const currentCardIndex = state[currentBoardIndex].lists[
-        currentListIndex
-    ].cards.findIndex((c) => c.cardId === cardId)
-
-    const cardActionAmount =
-        state[currentBoardIndex].lists[currentListIndex].cards[currentCardIndex]
-            .cardData.length
+    const currentCard: Cards | undefined = currentList?.cards.find(
+        (c) => c.cardId === cardId
+    )
+    const cardActionAmount = currentCard?.cardData.length
 
     const handleClick = () => {
-        onOpenModal()
+        setIsOpemModal(true)
         setCardId({
             cardId: cardId,
             listId: listId,

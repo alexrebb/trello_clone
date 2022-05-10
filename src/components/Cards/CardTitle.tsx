@@ -121,7 +121,6 @@ const CardTitle: React.FC<props> = ({ listId }) => {
                         autoFocus
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        maxLength={54}
                     />
                     <ButtonsWrapper>
                         <SubmitButton>Add card</SubmitButton>

@@ -5,18 +5,20 @@ import Menu from '../components/Menu/Menu'
 import ListContainer from '../components/Lists/ListsContainer'
 import { useState, useEffect } from 'react'
 import { BoardListState, userDevice } from '../store/atoms'
-import { useSetRecoilState } from 'recoil'
+import { useSetRecoilState, useRecoilState } from 'recoil'
+import { updateBoardList } from '../service/api'
 import axios from 'axios'
+import { baseURL } from '../service/api'
 
 const StyledDashBoardContainer = styled.div`
-    height: calc(100vh - 70px);
+    min-height: calc(100vh - 70px);
     display: flex;
     background: url('https://images.pexels.com/photos/15286/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
 `
 
 const DashBoard = () => {
     const [isOpenSettingsMenu, setIsOpenSettingsMenu] = useState(false)
-    const setState = useSetRecoilState(BoardListState)
+    const [state, setState] = useRecoilState(BoardListState)
     const setUserDevice = useSetRecoilState(userDevice)
 
     const isOnOpenSettingsMenu = () => {
@@ -28,17 +30,12 @@ const DashBoard = () => {
 
     const getBoardList = async () => {
         try {
-            const response = await axios.get('http://localhost:8000/boardlist')
-
-            setState(response.data)
+            const response = await axios.get(`${baseURL}/get-board-list`)
+            setState(response.data.boardList)
         } catch (error) {
             console.log(error)
         }
     }
-
-    // useEffect(() => {
-    //     localStorage.setItem('boardsList', JSON.stringify(state))
-    // }, [state])
 
     useEffect(() => {
         if (
@@ -48,23 +45,12 @@ const DashBoard = () => {
         ) {
             setUserDevice('Mobile')
         }
-
         getBoardList()
-        // if (localStorage.length === 0) return
-        // try {
-
-        //     setState(
-        //         produce(state, (draftState) => {
-        //             draftState = JSON.parse(
-        //                 `${localStorage.getItem('boardsList')}`
-        //             )
-        //             return draftState
-        //         })
-        //     )
-        // } catch (error) {
-        //     return
-        // }
     }, [])
+
+    useEffect(() => {
+        updateBoardList(state)
+    }, [state])
 
     return (
         <Layout>

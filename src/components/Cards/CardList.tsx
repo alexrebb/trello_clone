@@ -12,12 +12,11 @@ const StyledCardList = styled.div`
     overflow-y: auto;
 `
 interface props {
-    onOpenModal: Function
     cards: Array<Cards>
     listId: string
 }
 
-const CardList: React.FC<props> = ({ onOpenModal, cards, listId }) => {
+const CardList: React.FC<props> = ({ cards, listId }) => {
     return (
         <Droppable droppableId={listId}>
             {(provided) => (
@@ -33,7 +32,6 @@ const CardList: React.FC<props> = ({ onOpenModal, cards, listId }) => {
                                 listId={listId}
                                 index={index}
                                 cardTitle={card.cardTitle}
-                                onOpenModal={onOpenModal}
                             />
                         )
                     })}

@@ -1,13 +1,17 @@
 import Lists from './Lists'
+import ModalCard from '../Modal/ModalCard'
 import styled from 'styled-components/macro'
 import AddNewList from './AddNewList'
-import { BoardListState, BoardIdState } from '../../store/atoms'
-import { memo, useCallback, useState } from 'react'
+import {
+    BoardListState,
+    BoardIdState,
+    isOpenModalState,
+} from '../../store/atoms'
+import { memo, useCallback } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import produce from 'immer'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { DragState } from '../../types'
-import ModalCard from '../Modal/ModalCard'
 
 const StyledListContainer = styled.div`
     display: flex;
@@ -17,13 +21,10 @@ const StyledListContainer = styled.div`
 `
 
 const ListContainer = () => {
-    const [isOpenModal, setIsOpenModal] = useState(false)
+    const [isOpenModal, setIsOpenModal] = useRecoilState(isOpenModalState)
     const [state, setState] = useRecoilState(BoardListState)
     const boardId = useRecoilValue(BoardIdState)
 
-    const onOpenModal = () => {
-        setIsOpenModal(true)
-    }
     const onCloseModal = () => {
         setIsOpenModal(false)
     }
@@ -38,8 +39,7 @@ const ListContainer = () => {
             ].lists.findIndex((list) => list.listId === dragState.sourceCardId)
             if (indexSourceBoard === -1 || indexSourceList === -1) return
 
-            const sourceList: any =
-                state[indexSourceBoard].lists[indexSourceList]
+            const sourceList = state[indexSourceBoard].lists[indexSourceList]
 
             setState(
                 produce(state, (draftState) => {
@@ -141,7 +141,7 @@ const ListContainer = () => {
 
             if (!destination) return
 
-            const dragAndDropState: any = {
+            const dragAndDropState = {
                 sourceCardId: draggableId,
                 sourceCardIndex: source.index,
                 destinationCardIndex: destination.index,
@@ -176,7 +176,6 @@ const ListContainer = () => {
                     dragAndDropState.destinationListId &&
                 dragAndDropState.sourceListId !== 'app'
             ) {
-                console.log(dragAndDropState)
                 dragOverBoard(dragAndDropState)
             }
         },
@@ -184,21 +183,23 @@ const ListContainer = () => {
     )
 
     return (
-        <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="app" type="list" direction="horizontal">
-                {(provided) => (
-                    <StyledListContainer
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                    >
-                        <Lists onOpenModal={onOpenModal} />
-                        <AddNewList />
-                        {provided.placeholder}
-                    </StyledListContainer>
-                )}
-            </Droppable>
+        <>
+            <DragDropContext onDragEnd={onDragEnd}>
+                <Droppable droppableId="app" type="list" direction="horizontal">
+                    {(provided) => (
+                        <StyledListContainer
+                            ref={provided.innerRef}
+                            {...provided.droppableProps}
+                        >
+                            <Lists />
+                            <AddNewList />
+                            {provided.placeholder}
+                        </StyledListContainer>
+                    )}
+                </Droppable>
+            </DragDropContext>
             {isOpenModal && <ModalCard onCloseModal={onCloseModal} />}
-        </DragDropContext>
+        </>
     )
 }
 

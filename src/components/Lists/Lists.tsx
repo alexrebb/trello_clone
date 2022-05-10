@@ -13,15 +13,10 @@ const StyledList = styled.div`
     margin-right: 10px;
     display: flex;
     flex-direction: column;
-    height: max-content;
     align-items: stretch;
 `
 
-interface props {
-    onOpenModal: Function
-}
-
-const Lists: React.FC<props> = ({ onOpenModal }) => {
+const Lists = () => {
     const currentBoard = useRecoilValue(filteredBoardsState)
 
     return (
@@ -43,7 +38,6 @@ const Lists: React.FC<props> = ({ onOpenModal }) => {
                                 listId={list.listId}
                                 listTitle={list.listTitle}
                                 cards={list.cards}
-                                onOpenModal={onOpenModal}
                             />
                         </StyledList>
                     )}

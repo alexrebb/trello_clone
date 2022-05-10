@@ -107,7 +107,6 @@ const CardTitleDescription = () => {
                         autoFocus
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        maxLength={54}
                     />
                     <ButtonsWrapper>
                         <SubmitButton>Save</SubmitButton>

@@ -103,6 +103,7 @@ const CardAddAction = () => {
         const currentCardIndex = state[currentBoardIndex].lists[
             currentListIndex
         ].cards.findIndex((c) => c.cardId === cardState.cardId)
+
         setState(
             produce(state, (draftState) => {
                 draftState[currentBoardIndex].lists[currentListIndex].cards[

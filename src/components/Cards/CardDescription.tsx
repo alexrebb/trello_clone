@@ -113,7 +113,6 @@ const CardDescription: React.FC<props> = ({ cardDescription }) => {
                         autoFocus
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        maxLength={160}
                     />
                     <ButtonsWrapper>
                         <SubmitButton>Save</SubmitButton>
