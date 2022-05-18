@@ -1,15 +1,13 @@
 import BoardList from '../Boards/BoardList'
 import { memo, useState, useCallback } from 'react'
 import styled from 'styled-components/macro'
-
 import { HiOutlinePlus } from 'react-icons/hi'
 import { GrClose } from 'react-icons/gr'
-
 import { useRecoilState } from 'recoil'
 import { BoardListState } from '../../store/atoms'
-
 import produce from 'immer'
 import { v4 as uuid } from 'uuid'
+import BoardsProvider from '../../service/BoardsProvider'
 
 const StyledNewBoard = styled.div`
     width: 180px;
@@ -79,7 +77,8 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
         if (e.relatedTarget !== null) return
         setIsOpenNewBoardInputForm(false)
     }
-    const onSubmitHandler = useCallback(
+
+    const onAddBoardHandler = useCallback(
         (e: React.FormEvent) => {
             e.preventDefault()
             if (!inputValue.length) return
@@ -87,24 +86,20 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
             const addBoard = {
                 boardId: uuid(),
                 boardTitle: inputValue,
-                boardListId: uuid(),
-                lists: [
-                    {
-                        listId: uuid(),
-                        listTitle: 'List',
-                        cards: [],
-                    },
-                ],
             }
 
             if (currentBoardState.length >= 10) return
 
+            BoardsProvider.createBoard(addBoard).then((res: any) => {
+                if (res.status === 200) {
+                    console.log('Success')
+                }
+            })
             setCurrentBoardState(
                 produce(currentBoardState, (draftState) => {
                     draftState.push(addBoard)
                 })
             )
-
             setIsOpenNewBoardInputForm(false)
             setInputValue('')
         },
@@ -122,7 +117,7 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
                 </StyledNewBoard>
             )}
             {isOpenNewBoardInputForm && (
-                <StyledForm onSubmit={onSubmitHandler}>
+                <StyledForm onSubmit={onAddBoardHandler}>
                     <StyledInput
                         placeholder="Enter a board title..."
                         autoFocus

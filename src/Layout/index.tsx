@@ -1,8 +1,7 @@
 import { ReactChild } from 'react'
 import styled from 'styled-components/macro'
-import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import { filteredBoardsState } from '../store/selectors'
+import { currentBoardTitle } from '../store/selectors'
 
 const Overlay = styled.div`
     display: flex;
@@ -45,25 +44,21 @@ interface props {
 }
 
 const Layout: React.FC<props> = ({ children }) => {
-    const board = useRecoilValue(filteredBoardsState)
-
-    const navigate = useNavigate()
-
-    const handleClick = () => {
-        navigate('/dashboard')
-    }
+    const boardTitle = useRecoilValue(currentBoardTitle)
 
     return (
         <Overlay>
             <Header>
                 <TitleLogo>
                     <h2>TODOSTER</h2>
-                    <StyledBoardTitle>
-                        Current board: {board?.boardTitle}
-                    </StyledBoardTitle>
+                    {boardTitle && (
+                        <StyledBoardTitle>
+                            Current board: {boardTitle}
+                        </StyledBoardTitle>
+                    )}
                 </TitleLogo>
 
-                <Button onClick={handleClick}>LOGIN</Button>
+                <Button>LOGIN</Button>
             </Header>
             <Container>{children}</Container>
         </Overlay>

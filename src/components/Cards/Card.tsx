@@ -2,9 +2,14 @@ import styled from 'styled-components/macro'
 import { HiOutlinePencil } from 'react-icons/hi'
 import { memo } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
-import { useSetRecoilState, useRecoilValue } from 'recoil'
-import { CardIdState, BoardListState, BoardIdState } from '../../store/atoms'
+import { useSetRecoilState } from 'recoil'
+import {
+    CardIdState,
+    isOpenModalState,
+    CardActionsState,
+} from '../../store/atoms'
 import { FaRegCommentDots } from 'react-icons/fa'
+import ActionsProvider from '../../service/ActionsProvider'
 
 const StyledIcon = styled.span`
     color: rgba(128, 128, 128, 0.9);
@@ -40,42 +45,30 @@ const StyledActionAmountWrapper = styled.div`
 `
 
 interface props {
-    onOpenModal: Function
     cardTitle: string
     cardId: string
     listId: string
     index: number
 }
 
-const Card: React.FC<props> = ({
-    onOpenModal,
-    cardTitle,
-    cardId,
-    index,
-    listId,
-}) => {
+const Card: React.FC<props> = ({ cardTitle, cardId, index, listId }) => {
+    const setActionListState = useSetRecoilState(CardActionsState)
     const setCardId = useSetRecoilState(CardIdState)
-    const state = useRecoilValue(BoardListState)
-    const boardId = useRecoilValue(BoardIdState)
-
-    const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
-    const currentListIndex = state[currentBoardIndex].lists.findIndex(
-        (l) => l.listId === listId
-    )
-    const currentCardIndex = state[currentBoardIndex].lists[
-        currentListIndex
-    ].cards.findIndex((c) => c.cardId === cardId)
-
-    const cardActionAmount =
-        state[currentBoardIndex].lists[currentListIndex].cards[currentCardIndex]
-            .cardData.length
+    const setIsOpemModal = useSetRecoilState(isOpenModalState)
 
     const handleClick = () => {
-        onOpenModal()
+        setIsOpemModal(true)
         setCardId({
             cardId: cardId,
             listId: listId,
         })
+        ActionsProvider.getCurrentActionList(listId, cardId).then(
+            (res: any) => {
+                if (res.status === 200) {
+                    setActionListState(res.data)
+                }
+            }
+        )
     }
 
     return (
@@ -92,13 +85,15 @@ const Card: React.FC<props> = ({
                         <StyledIcon>
                             <HiOutlinePencil />
                         </StyledIcon>
-                        {cardActionAmount ? (
+                        {/* {actionAmount ? (
                             <StyledActionAmountWrapper>
-                                {cardActionAmount} <FaRegCommentDots />
+                                <>
+                                    {actionAmount} <FaRegCommentDots />
+                                </>
                             </StyledActionAmountWrapper>
                         ) : (
                             <></>
-                        )}
+                        )} */}
                     </StyledIconsWrapper>
                 </StyledCard>
             )}

@@ -1,13 +1,14 @@
 import styled from 'styled-components/macro'
-import { CardData } from '../../types'
+import { CardAction } from '../../types'
 import { BsJournalPlus } from 'react-icons/bs'
 import { MdOutlineDescription } from 'react-icons/md'
 import { useState } from 'react'
 import { GrClose } from 'react-icons/gr'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { BoardListState, BoardIdState, CardIdState } from '../../store/atoms'
+import { CardActionsState, CardIdState } from '../../store/atoms'
 import produce from 'immer'
 import moment from 'moment'
+import ActionsProvider from '../../service/ActionsProvider'
 import { v4 as uuid } from 'uuid'
 
 const StyledIconPlus = styled.span`
@@ -74,8 +75,7 @@ const CloseInputIcon = styled.span`
 const CardAddAction = () => {
     const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
-    const [state, setState] = useRecoilState(BoardListState)
-    const boardId = useRecoilValue(BoardIdState)
+    const [actionsState, setActionsState] = useRecoilState(CardActionsState)
     const cardState = useRecoilValue(CardIdState)
 
     const closeInputFormHandler = () => {
@@ -91,23 +91,21 @@ const CardAddAction = () => {
         e.preventDefault()
         if (!inputValue) return
         setIsOpenInputForm(false)
-        const newAction: CardData = {
-            cardDataId: uuid(),
+        const newAction: CardAction = {
+            listId: cardState.listId,
+            cardId: cardState.cardId,
+            actionId: uuid(),
             action: inputValue,
             date: displayDateWithTime,
         }
-        const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
-        const currentListIndex = state[currentBoardIndex].lists.findIndex(
-            (l) => l.listId === cardState.listId
-        )
-        const currentCardIndex = state[currentBoardIndex].lists[
-            currentListIndex
-        ].cards.findIndex((c) => c.cardId === cardState.cardId)
-        setState(
-            produce(state, (draftState) => {
-                draftState[currentBoardIndex].lists[currentListIndex].cards[
-                    currentCardIndex
-                ].cardData.unshift(newAction)
+        ActionsProvider.createAction(newAction).then((res: any) => {
+            if (res.status === 200) {
+                console.log('Success')
+            }
+        })
+        setActionsState(
+            produce(actionsState, (draftState) => {
+                draftState.push(newAction)
             })
         )
         setInputValue('')

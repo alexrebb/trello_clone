@@ -1,8 +1,9 @@
 import Board from './Board'
 import styled from 'styled-components/macro'
-import { memo } from 'react'
+import { memo, useEffect } from 'react'
 import { BoardListState } from '../../store/atoms'
-import { useRecoilValue } from 'recoil'
+import { useRecoilState } from 'recoil'
+import BoardsProvider from '../../service/BoardsProvider'
 
 const StyledBoardList = styled.div`
     display: flex;
@@ -14,7 +15,15 @@ interface props {
 }
 
 const BoardList: React.FC<props> = ({ onOpenSettingsMenu }) => {
-    const boardList = useRecoilValue(BoardListState)
+    const [boardList, setBoardList] = useRecoilState(BoardListState)
+
+    useEffect(() => {
+        BoardsProvider.getBoardList().then((res: any) => {
+            if (res.status === 200) {
+                setBoardList(res.data)
+            }
+        })
+    }, [])
 
     return (
         <StyledBoardList>

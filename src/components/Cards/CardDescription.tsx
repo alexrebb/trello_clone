@@ -2,8 +2,9 @@ import { useState, memo } from 'react'
 import styled from 'styled-components/macro'
 import { GrClose } from 'react-icons/gr'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { BoardListState, CardIdState, BoardIdState } from '../../store/atoms'
+import { ListsState, CardIdState } from '../../store/atoms'
 import produce from 'immer'
+import CardsProvider from '../../service/CardsProvider'
 
 const StyledInputForm = styled.form`
     width: 100%;
@@ -66,9 +67,10 @@ interface props {
 const CardDescription: React.FC<props> = ({ cardDescription }) => {
     const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
-    const [state, setState] = useRecoilState(BoardListState)
+    const [state, setState] = useRecoilState(ListsState)
     const cardState = useRecoilValue(CardIdState)
-    const boardId = useRecoilValue(BoardIdState)
+    const cardId = cardState.cardId
+    const listId = cardState.listId
 
     const openInputFormHandler = () => {
         setIsOpenInputForm(true)
@@ -80,16 +82,20 @@ const CardDescription: React.FC<props> = ({ cardDescription }) => {
         e.preventDefault()
         if (!inputValue) return
         setIsOpenInputForm(false)
-        const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
-        const currentListIndex = state[currentBoardIndex].lists.findIndex(
-            (l) => l.listId === cardState.listId
+        const currentListIndex = state.findIndex((l) => l.listId === listId)
+        const currentCardIndex = state[currentListIndex].cards.findIndex(
+            (c) => c.cardId === cardId
         )
-        const currentCardIndex = state[currentBoardIndex].lists[
-            currentListIndex
-        ].cards.findIndex((c) => c.cardId === cardState.cardId)
+        CardsProvider.changeCardDescription(inputValue, listId, cardId).then(
+            (res: any) => {
+                if (res.status === 200) {
+                    console.log('Success')
+                }
+            }
+        )
         setState(
             produce(state, (draftState) => {
-                draftState[currentBoardIndex].lists[currentListIndex].cards[
+                draftState[currentListIndex].cards[
                     currentCardIndex
                 ].cardDescription = inputValue
             })
@@ -113,7 +119,6 @@ const CardDescription: React.FC<props> = ({ cardDescription }) => {
                         autoFocus
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
-                        maxLength={160}
                     />
                     <ButtonsWrapper>
                         <SubmitButton>Save</SubmitButton>

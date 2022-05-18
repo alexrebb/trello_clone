@@ -2,7 +2,7 @@ import List from './List'
 import { Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components/macro'
 import { memo } from 'react'
-import { filteredBoardsState } from '../../store/selectors'
+import { ListsState } from '../../store/atoms'
 import { useRecoilValue } from 'recoil'
 
 const StyledList = styled.div`
@@ -13,20 +13,15 @@ const StyledList = styled.div`
     margin-right: 10px;
     display: flex;
     flex-direction: column;
-    height: max-content;
     align-items: stretch;
 `
 
-interface props {
-    onOpenModal: Function
-}
-
-const Lists: React.FC<props> = ({ onOpenModal }) => {
-    const currentBoard = useRecoilValue(filteredBoardsState)
+const Lists = () => {
+    const currentBoard = useRecoilValue(ListsState)
 
     return (
         <>
-            {currentBoard?.lists.map((list, index) => (
+            {currentBoard?.map((list, index) => (
                 <Draggable
                     draggableId={list.listId}
                     index={index}
@@ -43,7 +38,6 @@ const Lists: React.FC<props> = ({ onOpenModal }) => {
                                 listId={list.listId}
                                 listTitle={list.listTitle}
                                 cards={list.cards}
-                                onOpenModal={onOpenModal}
                             />
                         </StyledList>
                     )}

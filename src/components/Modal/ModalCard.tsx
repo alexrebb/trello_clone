@@ -3,12 +3,10 @@ import CardDescription from '../Cards/CardDescription'
 import CardActionList from '../Cards/CardActionList'
 import CardAddAction from '../Cards/CardAddAction'
 import CardTitleDescription from '../Cards/CardTitleDescription'
-
 import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { useRecoilValue } from 'recoil'
 import { filteredCardState } from '../../store/selectors'
-
 import { MdOutlineDescription } from 'react-icons/md'
 
 const StyledModalContainer = styled.div`
@@ -42,7 +40,7 @@ const ModalCard: React.FC<props> = ({ onCloseModal }) => {
                 </StyledWrapper>
                 <CardDescription cardDescription={cardState.cardDescription} />
                 <CardAddAction />
-                <CardActionList cardState={cardState} />
+                <CardActionList />
             </StyledModalContainer>
         </Modal>
     )

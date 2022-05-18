@@ -1,9 +1,10 @@
 import styled from 'styled-components/macro'
 import { MdMoreHoriz } from 'react-icons/md'
 import { useState, memo, useCallback } from 'react'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { BoardListState, BoardIdState } from '../../store/atoms'
+import { useRecoilState } from 'recoil'
+import { ListsState } from '../../store/atoms'
 import produce from 'immer'
+import ListsProvider from '../../service/ListsProvider'
 
 const StyledListTitle = styled.div`
     font-weight: bold;
@@ -72,8 +73,7 @@ const ListTitle: React.FC<props> = ({ listTitle, listId }) => {
     const [isOpenInputTitle, setIsOpenInputTitle] = useState(false)
     const [isOpenRemoveList, setOpenRemoveList] = useState(false)
     const [inputValue, setInputValue] = useState('')
-    const [state, setState] = useRecoilState(BoardListState)
-    const boardId = useRecoilValue(BoardIdState)
+    const [state, setState] = useRecoilState(ListsState)
 
     const onOpenInputTitleHandler = () => {
         setIsOpenInputTitle(true)
@@ -85,38 +85,41 @@ const ListTitle: React.FC<props> = ({ listTitle, listId }) => {
         setOpenRemoveList(false)
     }
 
-    const onCloseInputTitleHandler = useCallback(() => {
+    const onChangeTitleHandler = useCallback(() => {
         setIsOpenInputTitle(false)
         if (!inputValue) return
 
-        const currentBoardIndex = state.findIndex(
-            (board) => board.boardId === boardId
-        )
-        const currentListIndex = state[currentBoardIndex].lists.findIndex(
+        const currentListIndex = state.findIndex(
             (list) => list.listId === listId
         )
 
+        ListsProvider.changeListTitle(inputValue, listId).then((res: any) => {
+            if (res.status === 200) {
+                console.log('Success')
+            }
+        })
+
         setState(
             produce(state, (draftState) => {
-                draftState[currentBoardIndex].lists[
-                    currentListIndex
-                ].listTitle = inputValue
+                draftState[currentListIndex].listTitle = inputValue
             })
         )
-    }, [boardId, listId, setState, state, inputValue])
+    }, [listId, setState, state, inputValue])
 
     const onRemoveListHandler = useCallback(() => {
-        const currentBoardIndex = state.findIndex(
-            (board) => board.boardId === boardId
-        )
+        ListsProvider.deleteList(listId).then((res: any) => {
+            if (res.status === 200) {
+                console.log('Success')
+            }
+        })
         setState(
             produce(state, (draftState) => {
-                draftState[currentBoardIndex].lists = draftState[
-                    currentBoardIndex
-                ].lists.filter((list) => list.listId !== listId)
+                return (draftState = draftState.filter(
+                    (list) => list.listId !== listId
+                ))
             })
         )
-    }, [boardId, listId, setState, state])
+    }, [listId, setState, state])
 
     return (
         <StyledList>
@@ -129,7 +132,7 @@ const ListTitle: React.FC<props> = ({ listTitle, listId }) => {
                 {isOpenInputTitle && (
                     <StyledInput
                         type="text"
-                        onBlur={onCloseInputTitleHandler}
+                        onBlur={onChangeTitleHandler}
                         autoFocus
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}

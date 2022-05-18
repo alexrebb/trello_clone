@@ -1,16 +1,16 @@
 import CardAction from './CardActions'
-import { Cards } from '../../types'
 import { memo } from 'react'
+import { useRecoilValue } from 'recoil'
+import { CardActionsState } from '../../store/atoms'
 
-interface props {
-    cardState: Cards
-}
-const CardActionList: React.FC<props> = ({ cardState }) => {
+const CardActionList = () => {
+    const currentActionList = useRecoilValue(CardActionsState)
+
     return (
         <>
-            {cardState.cardData?.map((data) => (
+            {currentActionList?.map((data) => (
                 <CardAction
-                    key={data.cardDataId}
+                    key={data.actionId}
                     action={data.action}
                     date={data.date}
                 />

@@ -1,5 +1,7 @@
-export interface CardData {
-    cardDataId: string
+export interface CardAction {
+    listId: string
+    cardId: string
+    actionId: string
     action: string
     date: string
 }
@@ -8,20 +10,18 @@ export interface Cards {
     cardDescription: string
     cardId: string
     cardTitle: string
-    cardData: CardData[]
 }
 
-export interface List {
+export interface Lists {
+    boardId: string
     listId: string
     listTitle: string
     cards: Cards[]
 }
 
 export interface BoardList {
-    boardListId: string
     boardId: string
     boardTitle: string
-    lists: List[]
 }
 
 export interface DragState {
@@ -35,14 +35,4 @@ export interface DragState {
 export interface BoardState {
     boardTitle: string
     boardId: string
-}
-
-interface A {
-    x: string
-    y: number
-    z: Arr[]
-}
-
-interface Arr {
-    a: string
 }

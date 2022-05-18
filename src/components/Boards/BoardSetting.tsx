@@ -6,6 +6,7 @@ import { BoardTitleState, BoardListState } from '../../store/atoms'
 import { MdMoreHoriz } from 'react-icons/md'
 import produce from 'immer'
 import { BoardState } from '../../types'
+import BoardsProvider from '../../service/BoardsProvider'
 
 const StyledSettingsMenu = styled.div`
     display: flex;
@@ -104,10 +105,10 @@ const BoardSetting: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
     const [isOpenInputTitle, setIsOpenInputTitle] = useState(false)
     const [isOpenRemoveList, setIsOpenRemoveList] = useState(false)
     const [inputValue, setInputValue] = useState('')
-    const [boardTitleState, setBoardTitleState]: any =
+    const [boardTitleState, setBoardTitleState] =
         useRecoilState(BoardTitleState)
     const [state, setState] = useRecoilState(BoardListState)
-
+    const boardId = boardTitleState.boardId
     const onOpenInputTitleHandler = () => {
         setIsOpenInputTitle(true)
     }
@@ -126,7 +127,14 @@ const BoardSetting: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
         if (!inputValue) return
 
         const currentBoardIndex = state.findIndex(
-            (board) => board.boardId === boardTitleState.boardId
+            (board) => board.boardId === boardId
+        )
+        BoardsProvider.changeBoardTitle(inputValue, boardId).then(
+            (res: any) => {
+                if (res.status === 200) {
+                    console.log('Success')
+                }
+            }
         )
 
         setState(
@@ -136,28 +144,28 @@ const BoardSetting: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
         )
         const updateBoardState: BoardState = {
             boardTitle: inputValue,
-            boardId: boardTitleState.boardId,
+            boardId: boardId,
         }
         setBoardTitleState(updateBoardState)
-    }, [
-        setState,
-        state,
-        inputValue,
-        boardTitleState.boardId,
-        setBoardTitleState,
-    ])
+    }, [setState, state, inputValue, boardId, setBoardTitleState])
 
     const onRemoveBoardHandler = useCallback(() => {
         if (state.length === 1) return
+
+        BoardsProvider.deleteBoard(boardId).then((res: any) => {
+            if (res.status === 200) {
+                console.log('Success')
+            }
+        })
         setState(
             produce(state, (draftState) => {
                 return (draftState = draftState.filter(
-                    (board) => board.boardId !== boardTitleState.boardId
+                    (board) => board.boardId !== boardId
                 ))
             })
         )
         isOnCloseSettingsMenu()
-    }, [boardTitleState.boardId, isOnCloseSettingsMenu, setState, state])
+    }, [boardId, isOnCloseSettingsMenu, setState, state])
 
     return (
         <StyledSettingsMenu>
