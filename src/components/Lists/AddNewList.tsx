@@ -3,9 +3,10 @@ import { HiOutlinePlus } from 'react-icons/hi'
 import { GrClose } from 'react-icons/gr'
 import { useState, memo, useCallback } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
-import { BoardListState, BoardIdState } from '../../store/atoms'
+import { ListsState, BoardIdState } from '../../store/atoms'
 import produce from 'immer'
 import { v4 as uuid } from 'uuid'
+import ListsProvider from '../../service/ListsProvider'
 
 const StyledAddListContainer = styled.div`
     position: fixed;
@@ -59,8 +60,7 @@ const CloseInputIcon = styled.div`
 const AddNewList = () => {
     const [isOpenNewListInputForm, setIsOpenNewListInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
-    const [currentBoardState, setCurrentBoardState] =
-        useRecoilState(BoardListState)
+    const [currentBoardState, setCurrentBoardState] = useRecoilState(ListsState)
     const currentBoardId = useRecoilValue(BoardIdState)
 
     const openNewListInputFormHandler = () => {
@@ -74,30 +74,34 @@ const AddNewList = () => {
         setIsOpenNewListInputForm(false)
     }
 
-    const onSubmitHandler = useCallback(
+    const onAddListList = useCallback(
         (e: React.FormEvent) => {
             e.preventDefault()
             if (!inputValue.length) return
 
             const addList = {
+                boardId: currentBoardId,
                 listId: uuid(),
                 listTitle: inputValue,
                 cards: [],
             }
-            const currentIndex: number = currentBoardState.findIndex(
-                (board) => board.boardId === currentBoardId
-            )
 
             if (
-                !currentBoardState[currentIndex] ||
-                currentBoardState[currentIndex]?.lists.length >= 5 ||
-                currentBoardState[currentIndex]?.lists.length === undefined
+                !currentBoardState ||
+                currentBoardState?.length >= 5 ||
+                currentBoardState?.length === undefined
             )
                 return
 
+            ListsProvider.createList(addList).then((res: any) => {
+                if (res.status === 200) {
+                    console.log('Success')
+                }
+            })
+
             setCurrentBoardState(
                 produce(currentBoardState, (draftState) => {
-                    draftState[currentIndex].lists.push(addList)
+                    draftState.push(addList)
                 })
             )
 
@@ -119,7 +123,7 @@ const AddNewList = () => {
             )}
 
             {isOpenNewListInputForm && (
-                <StyledForm onSubmit={onSubmitHandler}>
+                <StyledForm onSubmit={onAddListList}>
                     <StyledInput
                         placeholder="Enter a list title..."
                         autoFocus

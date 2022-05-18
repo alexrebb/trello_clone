@@ -3,9 +3,10 @@ import { HiOutlinePlus } from 'react-icons/hi'
 import { GrClose } from 'react-icons/gr'
 import { useState, memo } from 'react'
 import produce from 'immer'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { BoardListState, BoardIdState } from '../../store/atoms'
+import { useRecoilState } from 'recoil'
+import { ListsState } from '../../store/atoms'
 import { v4 as uuid } from 'uuid'
+import CardsProvider from '../../service/CardsProvider'
 
 const StyledAddCard = styled.div`
     color: gray;
@@ -65,11 +66,10 @@ interface props {
     listId: string
 }
 
-const CardTitle: React.FC<props> = ({ listId }) => {
+const AddNewCard: React.FC<props> = ({ listId }) => {
     const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
-    const [state, setState] = useRecoilState(BoardListState)
-    const boardId = useRecoilValue(BoardIdState)
+    const [state, setState] = useRecoilState(ListsState)
 
     const openInputFormHandler = () => {
         setIsOpenInputForm(true)
@@ -85,21 +85,22 @@ const CardTitle: React.FC<props> = ({ listId }) => {
             cardId: uuid(),
             cardTitle: inputValue,
             cardDescription: '',
-            cardData: [],
         }
-        const currentBoardIndex: number = state.findIndex(
-            (board) => board.boardId === boardId
-        )
-        const currentListIndex: number = state[
-            currentBoardIndex
-        ].lists.findIndex((list) => list.listId === listId)
 
-        if (currentBoardIndex === -1 || currentListIndex === -1) return
+        const currentListIndex: number = state.findIndex(
+            (list) => list.listId === listId
+        )
+        if (currentListIndex === -1) return
+
+        CardsProvider.createCard(listId, newCard).then((res: any) => {
+            if (res.status === 200) {
+                console.log('Success')
+            }
+        })
+
         setState(
             produce(state, (draftState) => {
-                draftState[currentBoardIndex].lists[
-                    currentListIndex
-                ].cards.push(newCard)
+                draftState[currentListIndex].cards.push(newCard)
             })
         )
         setIsOpenInputForm(false)
@@ -134,4 +135,4 @@ const CardTitle: React.FC<props> = ({ listId }) => {
     )
 }
 
-export default memo(CardTitle)
+export default memo(AddNewCard)

@@ -2,7 +2,7 @@ import List from './List'
 import { Draggable } from 'react-beautiful-dnd'
 import styled from 'styled-components/macro'
 import { memo } from 'react'
-import { filteredBoardsState } from '../../store/selectors'
+import { ListsState } from '../../store/atoms'
 import { useRecoilValue } from 'recoil'
 
 const StyledList = styled.div`
@@ -17,11 +17,11 @@ const StyledList = styled.div`
 `
 
 const Lists = () => {
-    const currentBoard = useRecoilValue(filteredBoardsState)
+    const currentBoard = useRecoilValue(ListsState)
 
     return (
         <>
-            {currentBoard?.lists.map((list, index) => (
+            {currentBoard?.map((list, index) => (
                 <Draggable
                     draggableId={list.listId}
                     index={index}

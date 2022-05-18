@@ -2,10 +2,11 @@ import { BsCardChecklist } from 'react-icons/bs'
 import styled from 'styled-components/macro'
 import { useRecoilValue, useRecoilState } from 'recoil'
 import { filteredCardState } from '../../store/selectors'
-import { BoardIdState, BoardListState, CardIdState } from '../../store/atoms'
+import { ListsState, CardIdState } from '../../store/atoms'
 import { useState, memo } from 'react'
 import { GrClose } from 'react-icons/gr'
 import produce from 'immer'
+import CardsProvider from '../../service/CardsProvider'
 
 const StyledTitle = styled.h3`
     margin-left: 10px;
@@ -61,9 +62,10 @@ const CardTitleDescription = () => {
     const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const currentCard = useRecoilValue(filteredCardState)
     const [inputValue, setInputValue] = useState('')
-    const [state, setState] = useRecoilState(BoardListState)
-    const boardId = useRecoilValue(BoardIdState)
+    const [state, setState] = useRecoilState(ListsState)
     const cardState = useRecoilValue(CardIdState)
+    const cardId = cardState.cardId
+    const listId = cardState.listId
 
     const openInputFormHandler = () => {
         setIsOpenInputForm(true)
@@ -75,18 +77,22 @@ const CardTitleDescription = () => {
         e.preventDefault()
         if (!inputValue) return
         setIsOpenInputForm(false)
-        const currentBoardIndex = state.findIndex((b) => b.boardId === boardId)
-        const currentListIndex = state[currentBoardIndex].lists.findIndex(
-            (l) => l.listId === cardState.listId
+        const currentListIndex = state.findIndex((l) => l.listId === listId)
+        const currentCardIndex = state[currentListIndex].cards.findIndex(
+            (c) => c.cardId === cardId
         )
-        const currentCardIndex = state[currentBoardIndex].lists[
-            currentListIndex
-        ].cards.findIndex((c) => c.cardId === cardState.cardId)
+        CardsProvider.changeCardTitle(inputValue, listId, cardId).then(
+            (res: any) => {
+                if (res.status === 200) {
+                    console.log('Success')
+                }
+            }
+        )
+
         setState(
             produce(state, (draftState) => {
-                draftState[currentBoardIndex].lists[currentListIndex].cards[
-                    currentCardIndex
-                ].cardTitle = inputValue
+                draftState[currentListIndex].cards[currentCardIndex].cardTitle =
+                    inputValue
             })
         )
         setInputValue('')

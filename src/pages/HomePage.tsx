@@ -11,6 +11,7 @@ const StyledHomeContainer = styled.div`
 `
 const StyledTitle = styled.h1`
     font-size: 70px;
+    text-transform: uppercase;
 `
 const StyledButton = styled.button`
     color: black;
@@ -31,9 +32,9 @@ const HomePage = () => {
     return (
         <Layout>
             <StyledHomeContainer>
-                <StyledTitle>WELCOME TO YOUR TASKS</StyledTitle>
+                <StyledTitle>welcome to your tasks</StyledTitle>
                 <StyledButton onClick={handleClick}>
-                    CREATE ACCOUNT
+                    create account
                 </StyledButton>
             </StyledHomeContainer>
         </Layout>

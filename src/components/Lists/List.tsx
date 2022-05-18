@@ -1,6 +1,6 @@
 import CardList from '../Cards/CardList'
 import ListTitle from './ListTitle'
-import CardTitle from '../Cards/CardTitle'
+import AddNewCard from '../Cards/AddNewCard'
 import { memo } from 'react'
 import { Cards } from '../../types'
 
@@ -14,7 +14,7 @@ const List: React.FC<props> = ({ listTitle, cards, listId }) => {
         <div>
             <ListTitle listTitle={listTitle} listId={listId} />
             <CardList cards={cards} listId={listId} />
-            <CardTitle listId={listId} />
+            <AddNewCard listId={listId} />
         </div>
     )
 }
