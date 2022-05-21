@@ -1,15 +1,15 @@
-import CardAction from './CardActions'
+import Action from './Action'
 import { memo } from 'react'
 import { useRecoilValue } from 'recoil'
 import { CardActionsState } from '../../store/atoms'
 
-const CardActionList = () => {
+const ActionsList = () => {
     const currentActionList = useRecoilValue(CardActionsState)
 
     return (
         <>
             {currentActionList?.map((data) => (
-                <CardAction
+                <Action
                     key={data.actionId}
                     action={data.action}
                     date={data.date}
@@ -19,4 +19,4 @@ const CardActionList = () => {
     )
 }
 
-export default memo(CardActionList)
+export default memo(ActionsList)

@@ -1,9 +1,5 @@
 import styled from 'styled-components/macro'
 import { VscSettingsGear } from 'react-icons/vsc'
-import { memo } from 'react'
-import { useSetRecoilState } from 'recoil'
-import { BoardIdState, BoardTitleState, ListsState } from '../../store/atoms'
-import ListsProvider from '../../service/ListsProvider'
 
 const StyledBoardContainer = styled.div`
     width: 180px;
@@ -45,47 +41,28 @@ const StyledIcon = styled.span`
         background-color: rgba(128, 128, 128, 0.45);
     }
 `
+
 interface props {
+    onClickHandleBoard: Function
     onOpenSettingsMenu: Function
-    boardId: string
     boardTitle: string
 }
 
 const Board: React.FC<props> = ({
+    onClickHandleBoard,
     onOpenSettingsMenu,
-    boardId,
     boardTitle,
 }) => {
-    const setBoardIdState = useSetRecoilState(BoardIdState)
-    const setBoardTitleState = useSetRecoilState(BoardTitleState)
-    const setCurrentBoard = useSetRecoilState(ListsState)
-
-    const onOpenSettingsMenuHandler = () => {
-        onOpenSettingsMenu()
-        const boardState = {
-            boardId: boardId,
-            boardTitle: boardTitle,
-        }
-        setBoardTitleState(boardState)
-    }
-
-    const onClickHandleBoard = () => {
-        setBoardIdState(boardId)
-        ListsProvider.getCurrentLists(boardId).then((res: any) => {
-            if (res.status === 200) {
-                setCurrentBoard(res.data)
-            }
-        })
-    }
-
     return (
         <StyledBoardContainer>
-            <StyledBoard onClick={onClickHandleBoard}>{boardTitle}</StyledBoard>
-            <StyledIcon onClick={onOpenSettingsMenuHandler}>
+            <StyledBoard onClick={() => onClickHandleBoard()}>
+                {boardTitle}
+            </StyledBoard>
+            <StyledIcon onClick={() => onOpenSettingsMenu(boardTitle)}>
                 <VscSettingsGear />
             </StyledIcon>
         </StyledBoardContainer>
     )
 }
 
-export default memo(Board)
+export default Board

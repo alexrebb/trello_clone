@@ -1,9 +1,13 @@
 import Layout from '../Layout'
-import BoardSetting from '../components/Boards/BoardSetting'
+import BoardSettingContainer from '../components/BoardSettings/BoardSettingsContainer'
 import styled from 'styled-components/macro'
 import Menu from '../components/Menu/Menu'
-import ListContainer from '../components/Lists/ListsContainer'
+import ListsContainer from '../components/Lists/ListsContainer'
 import { useState } from 'react'
+import { useSetRecoilState } from 'recoil'
+import { BoardTitleState } from '../store/atoms'
+import { BoardList } from '../types'
+
 const StyledDashBoardContainer = styled.div`
     min-height: calc(100vh - 70px);
     display: flex;
@@ -11,26 +15,28 @@ const StyledDashBoardContainer = styled.div`
 `
 
 const DashBoard = () => {
-    const [isOpenSettingsMenu, setIsOpenSettingsMenu] = useState(false)
+    const [isOpenBoardSettings, setIsOpenBoardSettings] = useState(false)
+    const setBoardTitleState = useSetRecoilState(BoardTitleState)
 
-    const isOnOpenSettingsMenu = () => {
-        setIsOpenSettingsMenu(true)
+    const isOnOpenSettingsMenu = (boardState: BoardList) => {
+        setBoardTitleState(boardState)
+        setIsOpenBoardSettings(true)
     }
     const isOnCloseSettingsMenu = () => {
-        setIsOpenSettingsMenu(false)
+        setIsOpenBoardSettings(false)
     }
 
     return (
         <Layout>
             <StyledDashBoardContainer>
                 <Menu isOnOpenSettingsMenu={isOnOpenSettingsMenu} />
-                {isOpenSettingsMenu && (
-                    <BoardSetting
+                {isOpenBoardSettings && (
+                    <BoardSettingContainer
                         isOnCloseSettingsMenu={isOnCloseSettingsMenu}
                     />
                 )}
 
-                <ListContainer />
+                <ListsContainer />
             </StyledDashBoardContainer>
         </Layout>
     )
