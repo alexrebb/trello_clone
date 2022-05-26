@@ -1,8 +1,8 @@
 import Modal from './Modal'
-import CardDescription from '../Cards/CardDescription'
-import CardActionList from '../Cards/CardActionList'
-import CardAddAction from '../Cards/CardAddAction'
-import CardTitleDescription from '../Cards/CardTitleDescription'
+import ActionDescriptionContainer from '../Actions/ActionDescriptionContainer'
+import ActionList from '../Actions/ActionsList'
+import AddActionContainer from '../Actions/AddActionContainer'
+import CardTitleDescription from '../Actions/ActionTitleDescriptionContainer'
 import { memo } from 'react'
 import styled from 'styled-components/macro'
 import { useRecoilValue } from 'recoil'
@@ -17,7 +17,6 @@ const StyledWrapper = styled.div`
     display: flex;
     align-items: center;
 `
-
 const StyleDescr = styled.h4`
     margin-left: 10px;
     margin-right: 15px;
@@ -38,9 +37,11 @@ const ModalCard: React.FC<props> = ({ onCloseModal }) => {
                     <MdOutlineDescription />
                     <StyleDescr>Description</StyleDescr>
                 </StyledWrapper>
-                <CardDescription cardDescription={cardState.cardDescription} />
-                <CardAddAction />
-                <CardActionList />
+                <ActionDescriptionContainer
+                    cardDescription={cardState.cardDescription}
+                />
+                <AddActionContainer />
+                <ActionList />
             </StyledModalContainer>
         </Modal>
     )

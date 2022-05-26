@@ -1,7 +1,7 @@
 import Lists from './Lists'
 import ModalCard from '../Modal/ModalCard'
 import styled from 'styled-components/macro'
-import AddNewList from './AddNewList'
+import AddListContainer from './AddListContainer'
 import {
     ListsState,
     isOpenModalState,
@@ -12,7 +12,7 @@ import { useRecoilState, useSetRecoilState } from 'recoil'
 import produce from 'immer'
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd'
 import { DragState } from '../../types'
-import ListsProvider from '../../service/ListsProvider'
+import ListsProvider from '../../services/ListsProvider'
 
 const StyledListContainer = styled.div`
     display: flex;
@@ -21,7 +21,7 @@ const StyledListContainer = styled.div`
     padding: 10px 10px;
 `
 
-const ListContainer = () => {
+const ListsContainer = () => {
     const [isOpenModal, setIsOpenModal] = useRecoilState(isOpenModalState)
     const [state, setState] = useRecoilState(ListsState)
     const setActionListState = useSetRecoilState(CardActionsState)
@@ -166,7 +166,7 @@ const ListContainer = () => {
                             {...provided.droppableProps}
                         >
                             <Lists />
-                            <AddNewList />
+                            <AddListContainer />
                             {provided.placeholder}
                         </StyledListContainer>
                     )}
@@ -177,4 +177,4 @@ const ListContainer = () => {
     )
 }
 
-export default memo(ListContainer)
+export default memo(ListsContainer)

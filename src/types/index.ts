@@ -36,3 +36,8 @@ export interface BoardState {
     boardTitle: string
     boardId: string
 }
+export interface param {
+    method: string
+    body?: any
+    params?: any
+}

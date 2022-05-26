@@ -1,15 +1,5 @@
 import styled from 'styled-components/macro'
 import { HiOutlinePencil } from 'react-icons/hi'
-import { memo } from 'react'
-import { Draggable } from 'react-beautiful-dnd'
-import { useSetRecoilState } from 'recoil'
-import {
-    CardIdState,
-    isOpenModalState,
-    CardActionsState,
-} from '../../store/atoms'
-import { FaRegCommentDots } from 'react-icons/fa'
-import ActionsProvider from '../../service/ActionsProvider'
 
 const StyledIcon = styled.span`
     color: rgba(128, 128, 128, 0.9);
@@ -37,68 +27,22 @@ const StyledCard = styled.div`
 const StyledIconsWrapper = styled.div`
     display: flex;
 `
-const StyledActionAmountWrapper = styled.div`
-    display: flex;
-    align-items: center;
-    color: rgba(128, 128, 128, 0.9);
-    font-size: 14px;
-`
-
 interface props {
     cardTitle: string
-    cardId: string
-    listId: string
-    index: number
+    onOpenModalCard: Function
 }
 
-const Card: React.FC<props> = ({ cardTitle, cardId, index, listId }) => {
-    const setActionListState = useSetRecoilState(CardActionsState)
-    const setCardId = useSetRecoilState(CardIdState)
-    const setIsOpemModal = useSetRecoilState(isOpenModalState)
-
-    const handleClick = () => {
-        setIsOpemModal(true)
-        setCardId({
-            cardId: cardId,
-            listId: listId,
-        })
-        ActionsProvider.getCurrentActionList(listId, cardId).then(
-            (res: any) => {
-                if (res.status === 200) {
-                    setActionListState(res.data)
-                }
-            }
-        )
-    }
-
+const Card: React.FC<props> = ({ cardTitle, onOpenModalCard }) => {
     return (
-        <Draggable draggableId={cardId} index={index}>
-            {(provided) => (
-                <StyledCard
-                    onClick={handleClick}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
-                    ref={provided.innerRef}
-                >
-                    <span>{cardTitle}</span>
-                    <StyledIconsWrapper>
-                        <StyledIcon>
-                            <HiOutlinePencil />
-                        </StyledIcon>
-                        {/* {actionAmount ? (
-                            <StyledActionAmountWrapper>
-                                <>
-                                    {actionAmount} <FaRegCommentDots />
-                                </>
-                            </StyledActionAmountWrapper>
-                        ) : (
-                            <></>
-                        )} */}
-                    </StyledIconsWrapper>
-                </StyledCard>
-            )}
-        </Draggable>
+        <StyledCard onClick={() => onOpenModalCard()}>
+            <span>{cardTitle}</span>
+            <StyledIconsWrapper>
+                <StyledIcon>
+                    <HiOutlinePencil />
+                </StyledIcon>
+            </StyledIconsWrapper>
+        </StyledCard>
     )
 }
 
-export default memo(Card)
+export default Card

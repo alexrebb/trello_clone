@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro'
-import Card from './Card'
+import CardContainer from './CardContainer'
 import { memo } from 'react'
 import { Cards } from '../../types'
 import { Droppable } from 'react-beautiful-dnd'
@@ -26,7 +26,7 @@ const CardList: React.FC<props> = ({ cards, listId }) => {
                 >
                     {cards.map((card, index) => {
                         return (
-                            <Card
+                            <CardContainer
                                 key={card.cardId}
                                 cardId={card.cardId}
                                 listId={listId}
