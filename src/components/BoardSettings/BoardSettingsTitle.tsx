@@ -1,6 +1,7 @@
 import { GrClose } from 'react-icons/gr'
 import { MdMoreHoriz } from 'react-icons/md'
 import styled from 'styled-components/macro'
+import { useCallback } from 'react'
 
 const StyledInput = styled.input`
     width: 180px;
@@ -58,27 +59,35 @@ const BoardSettingsTitle: React.FC<props> = ({
     inputValue,
     onChangeTitleHandler,
 }) => {
+    const handleOpenInput = () => setIsOpenInputTitle(true)
+    const handleOpenRemoveBoard = () => setIsOpenRemoveList(true)
+    const handleCloseSettingMenu = () => isOnCloseSettingsMenu()
+
+    const handleChange = useCallback(
+        (e: { target: { value: string } }) => setInputValue(e.target.value),
+        [setInputValue]
+    )
+
     return (
         <StyledTitleWrapper>
-            {!isOpenInputTitle && (
-                <StyledListTitle onClick={() => setIsOpenInputTitle(true)}>
+            {!isOpenInputTitle ? (
+                <StyledListTitle onClick={handleOpenInput}>
                     {boardTitle}
                 </StyledListTitle>
-            )}
-            {isOpenInputTitle && (
+            ) : (
                 <StyledInput
                     type="text"
                     onBlur={() => onChangeTitleHandler()}
                     autoFocus
                     value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    onChange={handleChange}
                 />
             )}
             <StyledIconsWrapper>
-                <StyledIcon onClick={() => setIsOpenRemoveList(true)}>
+                <StyledIcon onClick={handleOpenRemoveBoard}>
                     <MdMoreHoriz />
                 </StyledIcon>
-                <StyledCloseIcon onClick={() => isOnCloseSettingsMenu()}>
+                <StyledCloseIcon onClick={handleCloseSettingMenu}>
                     <GrClose />
                 </StyledCloseIcon>
             </StyledIconsWrapper>

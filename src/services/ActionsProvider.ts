@@ -3,7 +3,7 @@ import { baseURL } from './constants'
 import { param } from '../types'
 
 class ActionsProvider {
-    getOptions = ({ method, body, params }: param) => {
+    static getOptions = ({ method, body, params }: param) => {
         const options = {
             method,
             headers: {
@@ -20,19 +20,27 @@ class ActionsProvider {
 
         return options
     }
-    createAction = async (action: CardAction) => {
+    static createAction = async (action: CardAction) => {
         return await fetch(
             `${baseURL}/create-action`,
             this.getOptions({ method: 'POST', body: action })
-        ).then((res) => res.json())
+        ).then((res) => {
+            if (res.status === 400) console.log('Error fetching create action ')
+        })
     }
 
-    getCurrentActionList = async (cardId: string) => {
+    static getCurrentActionList = async (cardId: string) => {
         return await fetch(
             `${baseURL}/get-action-list=${cardId}`,
             this.getOptions({ method: 'GET' })
-        ).then((res) => res.json())
+        ).then((res) => {
+            if (res.status === 400)
+                console.log('Error fetching get actions list ')
+            if (res.status === 200) {
+                return res.json()
+            }
+        })
     }
 }
 
-export default new ActionsProvider()
+export default ActionsProvider

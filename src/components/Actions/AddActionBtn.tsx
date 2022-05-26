@@ -26,11 +26,15 @@ interface props {
     setIsOpenInputForm: Function
 }
 const AddActionBtn: React.FC<props> = ({ setIsOpenInputForm }) => {
+    const handleOpenInput = () => {
+        setIsOpenInputForm(true)
+    }
+
     return (
         <StyledWrapper>
             <MdOutlineDescription />
             <StyleDescr>Actions</StyleDescr>
-            <StyledIconPlus onClick={() => setIsOpenInputForm(true)}>
+            <StyledIconPlus onClick={handleOpenInput}>
                 <BsJournalPlus />
             </StyledIconPlus>
         </StyledWrapper>

@@ -22,11 +22,13 @@ const AddCardActionDescription: React.FC<props> = ({
     setIsOpenInputForm,
     cardDescription,
 }) => {
+    const handleOpenInput = () => {
+        setIsOpenInputForm(true)
+    }
+
     return (
-        <StyledDescription onClick={() => setIsOpenInputForm(true)}>
-            {cardDescription
-                ? cardDescription
-                : 'Add a more deteiled description...'}
+        <StyledDescription onClick={handleOpenInput}>
+            {cardDescription || 'Add a more deteiled description...'}
         </StyledDescription>
     )
 }

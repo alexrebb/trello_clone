@@ -52,13 +52,7 @@ const BoardSettingsContainer: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
         const currentBoardIndex = state.findIndex(
             (board) => board.boardId === boardId
         )
-        BoardsProvider.changeBoardTitle(inputValue, boardId).then(
-            (res: any) => {
-                if (res.error) {
-                    console.log('Ошибка ChangeBoardTitle')
-                }
-            }
-        )
+        BoardsProvider.changeBoardTitle(inputValue, boardId)
 
         setState(
             produce(state, (draftState) => {
@@ -75,11 +69,8 @@ const BoardSettingsContainer: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
     const onRemoveBoardHandler = useCallback(() => {
         if (state.length === 1) return
 
-        BoardsProvider.deleteBoard(boardId).then((res: any) => {
-            if (res.status === 200) {
-                console.log('Success')
-            }
-        })
+        BoardsProvider.deleteBoard(boardId)
+
         setState(
             produce(state, (draftState) => {
                 return (draftState = draftState.filter(

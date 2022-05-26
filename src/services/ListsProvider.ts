@@ -3,7 +3,7 @@ import { baseURL } from './constants'
 import { param } from '../types'
 
 class ListsProvider {
-    getOptions = ({ method, body, params }: param) => {
+    static getOptions = ({ method, body, params }: param) => {
         const options = {
             method,
             headers: {
@@ -21,40 +21,54 @@ class ListsProvider {
         return options
     }
 
-    getCurrentLists = async (boardId: string) => {
+    static getCurrentLists = async (boardId: string) => {
         return await fetch(
             `${baseURL}/get-lists=${boardId}`,
             this.getOptions({ method: 'GET' })
-        ).then((res) => res.json())
+        ).then((res) => {
+            if (res.status === 400) console.log('Error fetching get lists ')
+            if (res.status === 200) {
+                return res.json()
+            }
+        })
     }
 
-    changeListTitle = async (listTitle: string, listId: string) => {
+    static changeListTitle = async (listTitle: string, listId: string) => {
         return await fetch(
             `${baseURL}/change-list-title`,
             this.getOptions({ method: 'PUT', body: { listId, listTitle } })
-        ).then((res) => res.status === 200)
+        ).then((res) => {
+            if (res.status === 400)
+                console.log('Error fetching change list title ')
+        })
     }
 
-    createList = async (list: Lists) => {
+    static createList = async (list: Lists) => {
         return await fetch(
             `${baseURL}/create-list`,
             this.getOptions({ method: 'POST', body: list })
-        ).then((res) => res.json())
+        ).then((res) => {
+            if (res.status === 400) console.log('Error fetching create list ')
+        })
     }
 
-    deleteList = async (listId: string) => {
+    static deleteList = async (listId: string) => {
         return await fetch(
             `${baseURL}/delete-list`,
             this.getOptions({ method: 'DELETE', body: { listId } })
-        ).then((res) => res.status === 200)
+        ).then((res) => {
+            if (res.status === 400) console.log('Error fetching delete list ')
+        })
     }
 
-    updateLists = async (listsState: Lists[]) => {
+    static updateLists = async (listsState: Lists[]) => {
         return await fetch(
             `${baseURL}/update-lists`,
             this.getOptions({ method: 'PUT', body: { listsState } })
-        ).then((res) => res.status === 200)
+        ).then((res) => {
+            if (res.status === 400) console.log('Error fetching update list ')
+        })
     }
 }
 
-export default new ListsProvider()
+export default ListsProvider

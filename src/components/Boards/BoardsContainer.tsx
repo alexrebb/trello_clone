@@ -19,11 +19,6 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
     const [currentBoardState, setCurrentBoardState] =
         useRecoilState(BoardListState)
 
-    const onCloseOnBlur = (e: any): void => {
-        if (e.relatedTarget !== null) return
-        setIsOpenNewBoardInputForm(false)
-    }
-
     const onAddBoardHandler = useCallback(
         (e: React.FormEvent) => {
             e.preventDefault()
@@ -36,11 +31,8 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
 
             if (currentBoardState.length >= 10) return
 
-            BoardsProvider.createBoard(addBoard).then((res: any) => {
-                if (res.error) {
-                    console.log('Ошибка добавления доски')
-                }
-            })
+            BoardsProvider.createBoard(addBoard)
+
             setCurrentBoardState(
                 produce(currentBoardState, (draftState) => {
                     draftState.push(addBoard)
@@ -53,31 +45,25 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
     )
 
     useEffect(() => {
-        BoardsProvider.getBoardList().then((res: any) => {
-            if (res.errors) {
-                console.log('Ошибка получения Списка досок')
-            } else {
-                setCurrentBoardState(res)
-            }
-        })
+        BoardsProvider.getBoardList().then((res: any) =>
+            setCurrentBoardState(res)
+        )
     }, [])
 
     return (
         <>
             <h4>Your boards</h4>
             <BoardList onOpenSettingsMenu={onOpenSettingsMenu} />
-            {!isOpenNewBoardInputForm && (
+            {!isOpenNewBoardInputForm ? (
                 <AddBoardBtn
                     setIsOpenNewBoardInputForm={setIsOpenNewBoardInputForm}
                 />
-            )}
-            {isOpenNewBoardInputForm && (
+            ) : (
                 <AddBoardInputForm
                     setIsOpenNewBoardInputForm={setIsOpenNewBoardInputForm}
                     onAddBoardHandler={onAddBoardHandler}
                     setInputValue={setInputValue}
                     inputValue={inputValue}
-                    onCloseOnBlur={onCloseOnBlur}
                 />
             )}
         </>

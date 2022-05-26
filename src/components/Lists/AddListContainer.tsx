@@ -11,8 +11,8 @@ import ListsProvider from '../../services/ListsProvider'
 
 const StyledAddListContainer = styled.div`
     position: fixed;
-    left: calc(100% - 210px);
-    width: 170px;
+    left: calc(100% - 180px);
+    width: 150px;
     background-color: rgba(255, 248, 248, 0.849);
     border-radius: 3px;
     padding: 10px;
@@ -54,11 +54,7 @@ const AddListContainer = () => {
             )
                 return
 
-            ListsProvider.createList(addList).then((res: any) => {
-                if (res.status === 200) {
-                    console.log('Success')
-                }
-            })
+            ListsProvider.createList(addList)
 
             setCurrentBoardState(
                 produce(currentBoardState, (draftState) => {
@@ -74,13 +70,11 @@ const AddListContainer = () => {
 
     return (
         <StyledAddListContainer>
-            {!isOpenNewListInputForm && (
+            {!isOpenNewListInputForm ? (
                 <AddListBtn
                     setIsOpenNewListInputForm={setIsOpenNewListInputForm}
                 />
-            )}
-
-            {isOpenNewListInputForm && (
+            ) : (
                 <AddListInputForm
                     setIsOpenNewListInputForm={setIsOpenNewListInputForm}
                     onCloseOnBlur={onCloseOnBlur}

@@ -45,11 +45,8 @@ const ListTitleContainer: React.FC<props> = ({ listTitle, listId }) => {
     }, [listId, setState, state, inputValue])
 
     const onRemoveListHandler = useCallback(() => {
-        ListsProvider.deleteList(listId).then((res: any) => {
-            if (res.status === 200) {
-                console.log('Success')
-            }
-        })
+        ListsProvider.deleteList(listId)
+
         setState(
             produce(state, (draftState) => {
                 return (draftState = draftState.filter(
