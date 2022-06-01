@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil'
 import { ListsState } from '../../store/atoms'
 import { v4 as uuid } from 'uuid'
 import CardsProvider from '../../services/CardsProvider'
+import loggerErrors from '../../utils/logger'
 
 interface props {
     listId: string
@@ -15,6 +16,9 @@ const AddCardContainer: React.FC<props> = ({ listId }) => {
     const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [state, setState] = useRecoilState(ListsState)
+
+    const handleCloseInput = useCallback(() => setIsOpenInputForm(false), [])
+    const handleOpenInput = useCallback(() => setIsOpenInputForm(true), [])
 
     const onAddNewCardHandler = useCallback(
         (e: React.FormEvent) => {
@@ -31,7 +35,9 @@ const AddCardContainer: React.FC<props> = ({ listId }) => {
             )
             if (currentListIndex === -1) return
 
-            CardsProvider.createCard(listId, newCard)
+            CardsProvider.createCard(listId, newCard).catch((err) =>
+                loggerErrors(err)
+            )
 
             setState(
                 produce(state, (draftState) => {
@@ -47,13 +53,13 @@ const AddCardContainer: React.FC<props> = ({ listId }) => {
     return (
         <>
             {!isOpenInputForm ? (
-                <AddCardBtn setIsOpenInputForm={setIsOpenInputForm} />
+                <AddCardBtn handleOpenInput={handleOpenInput} />
             ) : (
                 <AddCardInputForm
                     onAddNewCardHandler={onAddNewCardHandler}
                     inputValue={inputValue}
                     setInputValue={setInputValue}
-                    setIsOpenInputForm={setIsOpenInputForm}
+                    handleCloseInput={handleCloseInput}
                 />
             )}
         </>

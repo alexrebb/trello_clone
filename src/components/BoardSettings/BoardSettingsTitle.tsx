@@ -40,29 +40,25 @@ const StyledTitleWrapper = styled.div`
     margin-top: 5px;
 `
 interface props {
-    setIsOpenRemoveList: Function
-    isOnCloseSettingsMenu: Function
+    handleOpenRemoveBoard: Function
+    handleCloseSettingMenu: Function
     isOpenInputTitle: Boolean
     boardTitle: string
-    setIsOpenInputTitle: Function
+    handleOpenInputTitle: Function
     setInputValue: Function
     inputValue: string
     onChangeTitleHandler: Function
 }
 const BoardSettingsTitle: React.FC<props> = ({
-    setIsOpenRemoveList,
-    isOnCloseSettingsMenu,
+    handleOpenRemoveBoard,
+    handleCloseSettingMenu,
     isOpenInputTitle,
     boardTitle,
-    setIsOpenInputTitle,
+    handleOpenInputTitle,
     setInputValue,
     inputValue,
     onChangeTitleHandler,
 }) => {
-    const handleOpenInput = () => setIsOpenInputTitle(true)
-    const handleOpenRemoveBoard = () => setIsOpenRemoveList(true)
-    const handleCloseSettingMenu = () => isOnCloseSettingsMenu()
-
     const handleChange = useCallback(
         (e: { target: { value: string } }) => setInputValue(e.target.value),
         [setInputValue]
@@ -71,7 +67,7 @@ const BoardSettingsTitle: React.FC<props> = ({
     return (
         <StyledTitleWrapper>
             {!isOpenInputTitle ? (
-                <StyledListTitle onClick={handleOpenInput}>
+                <StyledListTitle onClick={() => handleOpenInputTitle()}>
                     {boardTitle}
                 </StyledListTitle>
             ) : (
@@ -84,10 +80,10 @@ const BoardSettingsTitle: React.FC<props> = ({
                 />
             )}
             <StyledIconsWrapper>
-                <StyledIcon onClick={handleOpenRemoveBoard}>
+                <StyledIcon onClick={() => handleOpenRemoveBoard()}>
                     <MdMoreHoriz />
                 </StyledIcon>
-                <StyledCloseIcon onClick={handleCloseSettingMenu}>
+                <StyledCloseIcon onClick={() => handleCloseSettingMenu()}>
                     <GrClose />
                 </StyledCloseIcon>
             </StyledIconsWrapper>

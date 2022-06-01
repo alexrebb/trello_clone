@@ -48,18 +48,15 @@ interface props {
     onChangeCardTitle: Function
     inputValue: string
     setInputValue: Function
-    setIsOpenInputForm: Function
+    handleCloseForm: Function
 }
 
 const AddActionTitleDescriptionInputForm: React.FC<props> = ({
     onChangeCardTitle,
     inputValue,
     setInputValue,
-    setIsOpenInputForm,
+    handleCloseForm,
 }) => {
-    const handleCloseForm = () => {
-        setIsOpenInputForm(false)
-    }
     const handleChange = useCallback(
         (e: { target: { value: string } }) => setInputValue(e.target.value),
         [setInputValue]
@@ -75,7 +72,7 @@ const AddActionTitleDescriptionInputForm: React.FC<props> = ({
             />
             <ButtonsWrapper>
                 <SubmitButton>Save</SubmitButton>
-                <CloseInputIcon onClick={handleCloseForm}>
+                <CloseInputIcon onClick={() => handleCloseForm()}>
                     <GrClose />
                 </CloseInputIcon>
             </ButtonsWrapper>

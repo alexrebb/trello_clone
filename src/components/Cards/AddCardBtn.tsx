@@ -15,14 +15,12 @@ const StyledAddCard = styled.div`
     }
 `
 interface props {
-    setIsOpenInputForm: Function
+    handleOpenInput: Function
 }
 
-const AddCardBtn: React.FC<props> = ({ setIsOpenInputForm }) => {
-    const handleOpenInput = () => setIsOpenInputForm(true)
-
+const AddCardBtn: React.FC<props> = ({ handleOpenInput }) => {
     return (
-        <StyledAddCard onClick={handleOpenInput}>
+        <StyledAddCard onClick={() => handleOpenInput()}>
             <HiOutlinePlus />
             <span>Add a card</span>
         </StyledAddCard>

@@ -32,12 +32,12 @@ const StyledBtn = styled.button`
 `
 
 interface props {
-    setIsOpenRemoveList: Function
+    handleCloseRemoveBoard: Function
     onRemoveBoardHandler: Function
 }
 
 const BoardSettingsRemoveBoard: React.FC<props> = ({
-    setIsOpenRemoveList,
+    handleCloseRemoveBoard,
     onRemoveBoardHandler,
 }) => {
     return (
@@ -47,7 +47,7 @@ const BoardSettingsRemoveBoard: React.FC<props> = ({
                 <StyledBtn onClick={() => onRemoveBoardHandler()}>
                     Yes
                 </StyledBtn>
-                <StyledBtn onClick={() => setIsOpenRemoveList(false)}>
+                <StyledBtn onClick={() => handleCloseRemoveBoard()}>
                     No
                 </StyledBtn>
             </div>

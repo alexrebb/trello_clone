@@ -37,20 +37,18 @@ const CloseInputIcon = styled.div`
 `
 
 interface props {
-    setIsOpenNewBoardInputForm: Function
+    handleCloseInput: Function
     onAddBoardHandler: Function
     inputValue: string
     setInputValue: Function
 }
 
 const AddBoardInputForm: React.FC<props> = ({
-    setIsOpenNewBoardInputForm,
+    handleCloseInput,
     onAddBoardHandler,
     setInputValue,
     inputValue,
 }) => {
-    const handleCloseInput = () => setIsOpenNewBoardInputForm(false)
-
     const handleChange = useCallback(
         (e: { target: { value: string } }) => setInputValue(e.target.value),
         [setInputValue]
@@ -67,7 +65,7 @@ const AddBoardInputForm: React.FC<props> = ({
             />
             <ButtonsWrapper>
                 <SubmitButton>Add board</SubmitButton>
-                <CloseInputIcon onClick={handleCloseInput}>
+                <CloseInputIcon onClick={() => handleCloseInput()}>
                     <GrClose />
                 </CloseInputIcon>
             </ButtonsWrapper>

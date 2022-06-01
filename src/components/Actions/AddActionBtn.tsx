@@ -23,18 +23,14 @@ const StyledWrapper = styled.div`
 `
 
 interface props {
-    setIsOpenInputForm: Function
+    handleOpenInput: Function
 }
-const AddActionBtn: React.FC<props> = ({ setIsOpenInputForm }) => {
-    const handleOpenInput = () => {
-        setIsOpenInputForm(true)
-    }
-
+const AddActionBtn: React.FC<props> = ({ handleOpenInput }) => {
     return (
         <StyledWrapper>
             <MdOutlineDescription />
             <StyleDescr>Actions</StyleDescr>
-            <StyledIconPlus onClick={handleOpenInput}>
+            <StyledIconPlus onClick={() => handleOpenInput()}>
                 <BsJournalPlus />
             </StyledIconPlus>
         </StyledWrapper>

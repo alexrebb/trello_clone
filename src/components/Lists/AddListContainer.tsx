@@ -8,6 +8,7 @@ import { ListsState, BoardIdState } from '../../store/atoms'
 import produce from 'immer'
 import { v4 as uuid } from 'uuid'
 import ListsProvider from '../../services/ListsProvider'
+import loggerErrors from '../../utils/logger'
 
 const StyledAddListContainer = styled.div`
     position: fixed;
@@ -30,10 +31,18 @@ const AddListContainer = () => {
     const currentBoardId = useRecoilValue(BoardIdState)
     const maxListsAmount = 5
 
-    const onCloseOnBlur = (e: any): void => {
+    const onCloseOnBlur = useCallback((e: any): void => {
         if (e.relatedTarget !== null) return
         setIsOpenNewListInputForm(false)
-    }
+    }, [])
+
+    const hadnleOpenInput = useCallback(() => {
+        setIsOpenNewListInputForm(true)
+    }, [])
+
+    const handleCloseInput = useCallback(() => {
+        setIsOpenNewListInputForm(true)
+    }, [])
 
     const onAddList = useCallback(
         (e: React.FormEvent) => {
@@ -54,7 +63,7 @@ const AddListContainer = () => {
             )
                 return
 
-            ListsProvider.createList(addList)
+            ListsProvider.createList(addList).catch((err) => loggerErrors(err))
 
             setCurrentBoardState(
                 produce(currentBoardState, (draftState) => {
@@ -71,12 +80,10 @@ const AddListContainer = () => {
     return (
         <StyledAddListContainer>
             {!isOpenNewListInputForm ? (
-                <AddListBtn
-                    setIsOpenNewListInputForm={setIsOpenNewListInputForm}
-                />
+                <AddListBtn hadnleOpenInput={hadnleOpenInput} />
             ) : (
                 <AddListInputForm
-                    setIsOpenNewListInputForm={setIsOpenNewListInputForm}
+                    handleCloseInput={handleCloseInput}
                     onCloseOnBlur={onCloseOnBlur}
                     setInputValue={setInputValue}
                     inputValue={inputValue}

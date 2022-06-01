@@ -4,6 +4,7 @@ import { memo, useCallback } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { BoardIdState, BoardTitleState, ListsState } from '../../store/atoms'
 import ListsProvider from '../../services/ListsProvider'
+import loggerErrors from '../../utils/logger'
 
 interface props {
     onOpenSettingsMenu: Function
@@ -24,17 +25,19 @@ const BoardContainer: React.FC<props> = ({
         boardTitle: boardTitle,
     }
 
-    const onOpenSettingsMenuHandle = () => {
+    const onOpenSettingsMenuHandle = useCallback(() => {
         onOpenSettingsMenu(boardState)
-    }
+    }, [onOpenSettingsMenu])
 
     const onClickHandleBoard = useCallback(() => {
         setCurrentBoard([])
         setBoardIdState(boardId)
-        ListsProvider.getCurrentLists(boardId).then((res: any) => {
-            setCurrentBoard(res)
-            setBoardTitleState(boardState)
-        })
+        ListsProvider.getCurrentLists(boardId)
+            .then((res: any) => {
+                setCurrentBoard(res)
+                setBoardTitleState(boardState)
+            })
+            .catch((err) => loggerErrors(err))
     }, [setBoardIdState, setBoardTitleState, setCurrentBoard])
 
     return (

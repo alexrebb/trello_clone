@@ -46,7 +46,7 @@ const CloseInputIcon = styled.span`
 interface props {
     onChangeCardDescription: Function
     setInputValue: Function
-    setIsOpenInputForm: Function
+    hendleCloseInput: Function
     inputValue: string
 }
 
@@ -54,11 +54,8 @@ const AddCardActionDescriptionInputForm: React.FC<props> = ({
     onChangeCardDescription,
     inputValue,
     setInputValue,
-    setIsOpenInputForm,
+    hendleCloseInput,
 }) => {
-    const hendleCloseInput = () => {
-        setIsOpenInputForm(false)
-    }
     const handleChange = useCallback(
         (e: { target: { value: string } }) => setInputValue(e.target.value),
         [setInputValue]
@@ -74,7 +71,7 @@ const AddCardActionDescriptionInputForm: React.FC<props> = ({
             />
             <ButtonsWrapper>
                 <SubmitButton>Save</SubmitButton>
-                <CloseInputIcon onClick={hendleCloseInput}>
+                <CloseInputIcon onClick={() => hendleCloseInput()}>
                     <GrClose />
                 </CloseInputIcon>
             </ButtonsWrapper>

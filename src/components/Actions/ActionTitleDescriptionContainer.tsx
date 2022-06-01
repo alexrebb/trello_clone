@@ -7,6 +7,7 @@ import { useState, memo, useCallback } from 'react'
 
 import produce from 'immer'
 import CardsProvider from '../../services/CardsProvider'
+import loggerErrors from '../../utils/logger'
 
 const CardTitleDescription = () => {
     const [isOpenInputForm, setIsOpenInputForm] = useState(false)
@@ -18,6 +19,14 @@ const CardTitleDescription = () => {
     const listId = cardState.listId
     const cardTitle = currentCard.cardTitle
 
+    const handleCloseForm = useCallback(() => {
+        setIsOpenInputForm(false)
+    }, [])
+
+    const handleOpenForm = useCallback(() => {
+        setIsOpenInputForm(true)
+    }, [])
+
     const onChangeCardTitle = useCallback(
         (e: React.FormEvent) => {
             e.preventDefault()
@@ -27,12 +36,8 @@ const CardTitleDescription = () => {
             const currentCardIndex = state[currentListIndex].cards.findIndex(
                 (c) => c.cardId === cardId
             )
-            CardsProvider.changeCardTitle(inputValue, listId, cardId).then(
-                (res: any) => {
-                    if (res.status === 200) {
-                        console.log('Success')
-                    }
-                }
+            CardsProvider.changeCardTitle(inputValue, listId, cardId).catch(
+                (err) => loggerErrors(err)
             )
 
             setState(
@@ -52,11 +57,11 @@ const CardTitleDescription = () => {
             {!isOpenInputForm ? (
                 <AddActionTitleDesciption
                     cardTitle={cardTitle}
-                    setIsOpenInputForm={setIsOpenInputForm}
+                    handleOpenForm={handleOpenForm}
                 />
             ) : (
                 <AddActionTitleDescriptionInputForm
-                    setIsOpenInputForm={setIsOpenInputForm}
+                    handleCloseForm={handleCloseForm}
                     inputValue={inputValue}
                     onChangeCardTitle={onChangeCardTitle}
                     setInputValue={setInputValue}
