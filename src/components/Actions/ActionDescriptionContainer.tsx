@@ -5,6 +5,7 @@ import { useRecoilState, useRecoilValue } from 'recoil'
 import { ListsState, CardIdState } from '../../store/atoms'
 import produce from 'immer'
 import CardsProvider from '../../services/CardsProvider'
+import loggerErrors from '../../utils/logger'
 
 interface props {
     cardDescription: string
@@ -18,6 +19,14 @@ const ActionDescriptionContainer: React.FC<props> = ({ cardDescription }) => {
     const cardId = cardState.cardId
     const listId = cardState.listId
 
+    const handleOpenInput = useCallback(() => {
+        setIsOpenInputForm(true)
+    }, [])
+
+    const hendleCloseInput = useCallback(() => {
+        setIsOpenInputForm(false)
+    }, [])
+
     const onChangeCardDescription = useCallback(
         (e: React.FormEvent) => {
             e.preventDefault()
@@ -27,7 +36,11 @@ const ActionDescriptionContainer: React.FC<props> = ({ cardDescription }) => {
             const currentCardIndex = state[currentListIndex].cards.findIndex(
                 (c) => c.cardId === cardId
             )
-            CardsProvider.changeCardDescription(inputValue, listId, cardId)
+            CardsProvider.changeCardDescription(
+                inputValue,
+                listId,
+                cardId
+            ).catch((err) => loggerErrors(err))
 
             setState(
                 produce(state, (draftState) => {
@@ -45,7 +58,7 @@ const ActionDescriptionContainer: React.FC<props> = ({ cardDescription }) => {
         <>
             {!isOpenInputForm ? (
                 <AddCardActionDescription
-                    setIsOpenInputForm={setIsOpenInputForm}
+                    handleOpenInput={handleOpenInput}
                     cardDescription={cardDescription}
                 />
             ) : (
@@ -53,7 +66,7 @@ const ActionDescriptionContainer: React.FC<props> = ({ cardDescription }) => {
                     onChangeCardDescription={onChangeCardDescription}
                     inputValue={inputValue}
                     setInputValue={setInputValue}
-                    setIsOpenInputForm={setIsOpenInputForm}
+                    hendleCloseInput={hendleCloseInput}
                 />
             )}
         </>

@@ -26,26 +26,24 @@ const StyledInput = styled.input`
     font-size: 15px;
 `
 interface props {
-    setIsOpenInputTitle: Function
+    handleOpenInput: Function
     isOpenInputTitle: boolean
     listTitle: string
     onChangeTitleHandler: Function
     inputValue: string
     setInputValue: Function
-    setIsOpenRemoveList: Function
+    handleOpenRemoveList: Function
 }
 
 const ListTitle: React.FC<props> = ({
-    setIsOpenInputTitle,
+    handleOpenInput,
     isOpenInputTitle,
     listTitle,
     setInputValue,
     inputValue,
     onChangeTitleHandler,
-    setIsOpenRemoveList,
+    handleOpenRemoveList,
 }) => {
-    const handleOpenInput = () => setIsOpenInputTitle(true)
-    const handleOpenRemoveList = () => setIsOpenRemoveList(true)
     const handleChange = useCallback(
         (e: { target: { value: string } }) => setInputValue(e.target.value),
         [setInputValue]
@@ -54,7 +52,7 @@ const ListTitle: React.FC<props> = ({
     return (
         <StyledTitleContainer>
             {!isOpenInputTitle ? (
-                <StyledListTitle onClick={handleOpenInput}>
+                <StyledListTitle onClick={() => handleOpenInput()}>
                     {listTitle}
                 </StyledListTitle>
             ) : (
@@ -66,7 +64,7 @@ const ListTitle: React.FC<props> = ({
                     onChange={handleChange}
                 />
             )}
-            <StyledIcon onClick={handleOpenRemoveList}>
+            <StyledIcon onClick={() => handleOpenRemoveList()}>
                 <MdMoreHoriz />
             </StyledIcon>
         </StyledTitleContainer>

@@ -8,6 +8,7 @@ import {
     CardActionsState,
 } from '../../store/atoms'
 import ActionsProvider from '../../services/ActionsProvider'
+import loggerErrors from '../../utils/logger'
 
 interface props {
     cardTitle: string
@@ -32,9 +33,9 @@ const CardContainer: React.FC<props> = ({
             cardId: cardId,
             listId: listId,
         })
-        ActionsProvider.getCurrentActionList(cardId).then((res: any) =>
-            setActionListState(res)
-        )
+        ActionsProvider.getCurrentActionList(cardId)
+            .then((res: any) => setActionListState(res))
+            .catch((err) => loggerErrors(err))
     }, [cardId, listId, setActionListState, setCardId, setIsOpemModal])
 
     return (

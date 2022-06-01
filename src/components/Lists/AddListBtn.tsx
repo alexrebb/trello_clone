@@ -6,16 +6,14 @@ const StyledAddList = styled.div`
     cursor: pointer;
 `
 interface props {
-    setIsOpenNewListInputForm: Function
+    hadnleOpenInput: Function
 }
 
-const AddListBtn: React.FC<props> = ({ setIsOpenNewListInputForm }) => {
-    const hadnleOpenInput = () => setIsOpenNewListInputForm(true)
-
+const AddListBtn: React.FC<props> = ({ hadnleOpenInput }) => {
     return (
         <StyledAddList>
             <HiOutlinePlus />
-            <span onClick={hadnleOpenInput}>Add another list</span>
+            <span onClick={() => hadnleOpenInput()}>Add another list</span>
         </StyledAddList>
     )
 }

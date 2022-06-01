@@ -17,14 +17,12 @@ const StyledNewBoard = styled.div`
 `
 
 interface props {
-    setIsOpenNewBoardInputForm: Function
+    handleOpenInput: Function
 }
 
-const AddBoardBtn: React.FC<props> = ({ setIsOpenNewBoardInputForm }) => {
-    const handleOpenInput = () => setIsOpenNewBoardInputForm(true)
-
+const AddBoardBtn: React.FC<props> = ({ handleOpenInput }) => {
     return (
-        <StyledNewBoard onClick={handleOpenInput}>
+        <StyledNewBoard onClick={() => handleOpenInput()}>
             <HiOutlinePlus />
             <span>New board</span>
         </StyledNewBoard>

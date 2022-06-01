@@ -7,6 +7,7 @@ import { BoardListState } from '../../store/atoms'
 import produce from 'immer'
 import { v4 as uuid } from 'uuid'
 import BoardsProvider from '../../services/BoardsProvider'
+import loggerErrors from '../../utils/logger'
 
 interface props {
     onOpenSettingsMenu: Function
@@ -18,6 +19,14 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
     const [inputValue, setInputValue] = useState('')
     const [currentBoardState, setCurrentBoardState] =
         useRecoilState(BoardListState)
+
+    const handleCloseInput = useCallback(() => {
+        setIsOpenNewBoardInputForm(false)
+    }, [])
+
+    const handleOpenInput = useCallback(() => {
+        setIsOpenNewBoardInputForm(true)
+    }, [])
 
     const onAddBoardHandler = useCallback(
         (e: React.FormEvent) => {
@@ -31,7 +40,9 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
 
             if (currentBoardState.length >= 10) return
 
-            BoardsProvider.createBoard(addBoard)
+            BoardsProvider.createBoard(addBoard).catch((err) =>
+                loggerErrors(err)
+            )
 
             setCurrentBoardState(
                 produce(currentBoardState, (draftState) => {
@@ -45,9 +56,9 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
     )
 
     useEffect(() => {
-        BoardsProvider.getBoardList().then((res: any) =>
-            setCurrentBoardState(res)
-        )
+        BoardsProvider.getBoardList()
+            .then((res: any) => setCurrentBoardState(res))
+            .catch((err) => loggerErrors(err))
     }, [])
 
     return (
@@ -55,12 +66,10 @@ const BoardsContainer: React.FC<props> = ({ onOpenSettingsMenu }) => {
             <h4>Your boards</h4>
             <BoardList onOpenSettingsMenu={onOpenSettingsMenu} />
             {!isOpenNewBoardInputForm ? (
-                <AddBoardBtn
-                    setIsOpenNewBoardInputForm={setIsOpenNewBoardInputForm}
-                />
+                <AddBoardBtn handleOpenInput={handleOpenInput} />
             ) : (
                 <AddBoardInputForm
-                    setIsOpenNewBoardInputForm={setIsOpenNewBoardInputForm}
+                    handleCloseInput={handleCloseInput}
                     onAddBoardHandler={onAddBoardHandler}
                     setInputValue={setInputValue}
                     inputValue={inputValue}

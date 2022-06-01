@@ -47,20 +47,19 @@ interface props {
     onAddNewCardHandler: Function
     inputValue: string
     setInputValue: Function
-    setIsOpenInputForm: Function
+    handleCloseInput: Function
 }
 
 const AddCardInputForm: React.FC<props> = ({
     onAddNewCardHandler,
     inputValue,
     setInputValue,
-    setIsOpenInputForm,
+    handleCloseInput,
 }) => {
     const handleChange = useCallback(
         (e: { target: { value: string } }) => setInputValue(e.target.value),
         [setInputValue]
     )
-    const handleCloseInput = () => setIsOpenInputForm(false)
 
     return (
         <StyledInputForm onSubmit={(e) => onAddNewCardHandler(e)}>
@@ -72,7 +71,7 @@ const AddCardInputForm: React.FC<props> = ({
             />
             <ButtonsWrapper>
                 <SubmitButton>Add card</SubmitButton>
-                <CloseInputIcon onClick={handleCloseInput}>
+                <CloseInputIcon onClick={() => handleCloseInput()}>
                     <GrClose />
                 </CloseInputIcon>
             </ButtonsWrapper>

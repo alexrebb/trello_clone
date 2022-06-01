@@ -31,22 +31,22 @@ const StyledRemoveList = styled.div`
     }
 `
 interface props {
-    setIsOpenRemoveList: Function
+    handleCloseRemoveList: Function
     onRemoveListHandler: Function
 }
 
 const RemoveList: React.FC<props> = ({
-    setIsOpenRemoveList,
+    handleCloseRemoveList,
     onRemoveListHandler,
 }) => {
-    const handleCloseRemoveList = () => setIsOpenRemoveList(false)
-
     return (
         <StyledRemoveList>
             <SryleRemoveList>Remove List?</SryleRemoveList>
             <div>
                 <StyledBtn onClick={() => onRemoveListHandler()}>Yes</StyledBtn>
-                <StyledBtn onClick={handleCloseRemoveList}>No</StyledBtn>
+                <StyledBtn onClick={() => handleCloseRemoveList()}>
+                    No
+                </StyledBtn>
             </div>
         </StyledRemoveList>
     )

@@ -37,7 +37,7 @@ const CloseInputIcon = styled.div`
 `
 
 interface props {
-    setIsOpenNewListInputForm: Function
+    handleCloseInput: Function
     onCloseOnBlur: Function
     setInputValue: Function
     inputValue: string
@@ -45,14 +45,12 @@ interface props {
 }
 
 const AddListInputForm: React.FC<props> = ({
-    setIsOpenNewListInputForm,
+    handleCloseInput,
     onCloseOnBlur,
     setInputValue,
     inputValue,
     onAddList,
 }) => {
-    const handleCloseInput = () => setIsOpenNewListInputForm(false)
-
     const handleChange = useCallback(
         (e: { target: { value: string } }) => setInputValue(e.target.value),
         [setInputValue]
@@ -69,7 +67,7 @@ const AddListInputForm: React.FC<props> = ({
             />
             <ButtonsWrapper>
                 <SubmitButton>Add list</SubmitButton>
-                <CloseInputIcon onClick={handleCloseInput}>
+                <CloseInputIcon onClick={() => handleCloseInput()}>
                     <GrClose />
                 </CloseInputIcon>
             </ButtonsWrapper>

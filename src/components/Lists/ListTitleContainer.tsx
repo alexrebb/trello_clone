@@ -6,6 +6,7 @@ import { useRecoilState } from 'recoil'
 import { ListsState } from '../../store/atoms'
 import produce from 'immer'
 import ListsProvider from '../../services/ListsProvider'
+import loggerErrors from '../../utils/logger'
 
 const StyledList = styled.div`
     display: flex;
@@ -23,6 +24,18 @@ const ListTitleContainer: React.FC<props> = ({ listTitle, listId }) => {
     const [inputValue, setInputValue] = useState('')
     const [state, setState] = useRecoilState(ListsState)
 
+    const handleCloseRemoveList = useCallback(() => {
+        setIsOpenRemoveList(false)
+    }, [])
+
+    const handleOpenRemoveList = useCallback(() => {
+        setIsOpenRemoveList(false)
+    }, [])
+
+    const handleOpenInput = useCallback(() => {
+        setIsOpenInputTitle(true)
+    }, [])
+
     const onChangeTitleHandler = useCallback(() => {
         setIsOpenInputTitle(false)
         if (!inputValue) return
@@ -31,11 +44,9 @@ const ListTitleContainer: React.FC<props> = ({ listTitle, listId }) => {
             (list) => list.listId === listId
         )
 
-        ListsProvider.changeListTitle(inputValue, listId).then((res: any) => {
-            if (res.status === 200) {
-                console.log('Success')
-            }
-        })
+        ListsProvider.changeListTitle(inputValue, listId).catch((err) =>
+            loggerErrors(err)
+        )
 
         setState(
             produce(state, (draftState) => {
@@ -45,7 +56,7 @@ const ListTitleContainer: React.FC<props> = ({ listTitle, listId }) => {
     }, [listId, setState, state, inputValue])
 
     const onRemoveListHandler = useCallback(() => {
-        ListsProvider.deleteList(listId)
+        ListsProvider.deleteList(listId).catch((err) => loggerErrors(err))
 
         setState(
             produce(state, (draftState) => {
@@ -59,17 +70,17 @@ const ListTitleContainer: React.FC<props> = ({ listTitle, listId }) => {
     return (
         <StyledList>
             <ListTitle
-                setIsOpenInputTitle={setIsOpenInputTitle}
+                handleOpenInput={handleOpenInput}
                 isOpenInputTitle={isOpenInputTitle}
                 listTitle={listTitle}
                 setInputValue={setInputValue}
                 inputValue={inputValue}
                 onChangeTitleHandler={onChangeTitleHandler}
-                setIsOpenRemoveList={setIsOpenRemoveList}
+                handleOpenRemoveList={handleOpenRemoveList}
             />
             {isOpenRemoveList && (
                 <RemoveList
-                    setIsOpenRemoveList={setIsOpenRemoveList}
+                    handleCloseRemoveList={handleCloseRemoveList}
                     onRemoveListHandler={onRemoveListHandler}
                 />
             )}

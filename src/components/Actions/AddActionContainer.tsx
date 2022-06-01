@@ -8,14 +8,23 @@ import produce from 'immer'
 import moment from 'moment'
 import ActionsProvider from '../../services/ActionsProvider'
 import { v4 as uuid } from 'uuid'
+import loggerErrors from '../../utils/logger'
 
-const CardAddAction = () => {
+const AddActionContainer = () => {
     const [isOpenInputForm, setIsOpenInputForm] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [actionsState, setActionsState] = useRecoilState(CardActionsState)
     const cardState = useRecoilValue(CardIdState)
 
     const displayDateWithTime = moment().format('LLLL')
+
+    const handleOpenInput = useCallback(() => {
+        setIsOpenInputForm(true)
+    }, [])
+
+    const handleCloseInput = useCallback(() => {
+        setIsOpenInputForm(false)
+    }, [])
 
     const onAddCardAction = useCallback(
         (e: React.FormEvent) => {
@@ -29,7 +38,9 @@ const CardAddAction = () => {
                 action: inputValue,
                 date: displayDateWithTime,
             }
-            ActionsProvider.createAction(newAction)
+            ActionsProvider.createAction(newAction).catch((err) =>
+                loggerErrors(err)
+            )
 
             setActionsState(
                 produce(actionsState, (draftState) => {
@@ -50,10 +61,10 @@ const CardAddAction = () => {
 
     return (
         <>
-            <AddActionBtn setIsOpenInputForm={setIsOpenInputForm} />
+            <AddActionBtn handleOpenInput={handleOpenInput} />
             {isOpenInputForm && (
                 <AddActionInputForm
-                    setIsOpenInputForm={setIsOpenInputForm}
+                    handleCloseInput={handleCloseInput}
                     onAddCardAction={onAddCardAction}
                     setInputValue={setInputValue}
                     inputValue={inputValue}
@@ -63,4 +74,4 @@ const CardAddAction = () => {
     )
 }
 
-export default CardAddAction
+export default AddActionContainer

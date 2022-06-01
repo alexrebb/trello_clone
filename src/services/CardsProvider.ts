@@ -1,33 +1,15 @@
 import { Cards } from '../types'
 import { baseURL } from './constants'
-import { param } from '../types'
+import getOptions from '../utils/fetchOptions'
+import checkErrorStatus from '../utils/errorStatus'
 
 class CardsProvider {
-    static getOptions = ({ method, body, params }: param) => {
-        const options = {
-            method,
-            headers: {
-                params,
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-            body,
-        }
-
-        if (body) {
-            options.body = JSON.stringify(body)
-        }
-
-        return options
-    }
-
     static createCard = async (listId: string, card: Cards) => {
-        return await fetch(
+        const res = await fetch(
             `${baseURL}/create-card`,
-            this.getOptions({ method: 'POST', body: { listId, card } })
-        ).then((res) => {
-            if (res.status === 400) console.log('Error fetching create card ')
-        })
+            getOptions({ method: 'POST', body: { listId, card } })
+        )
+        checkErrorStatus(res)
     }
 
     static changeCardTitle = async (
@@ -35,16 +17,14 @@ class CardsProvider {
         listId: string,
         cardId: string
     ) => {
-        return await fetch(
+        const res = await fetch(
             `${baseURL}/change-card-title`,
-            this.getOptions({
+            getOptions({
                 method: 'PUT',
                 body: { cardTitle, listId, cardId },
             })
-        ).then((res) => {
-            if (res.status === 400)
-                console.log('Error fetching change card title ')
-        })
+        )
+        checkErrorStatus(res)
     }
 
     static changeCardDescription = async (
@@ -52,16 +32,14 @@ class CardsProvider {
         listId: string,
         cardId: string
     ) => {
-        return await fetch(
+        const res = await fetch(
             `${baseURL}/change-card-descr`,
-            this.getOptions({
+            getOptions({
                 method: 'PUT',
                 body: { cardDescription, listId, cardId },
             })
-        ).then((res) => {
-            if (res.status === 400)
-                console.log('Error fetching change card description ')
-        })
+        )
+        checkErrorStatus(res)
     }
 }
 

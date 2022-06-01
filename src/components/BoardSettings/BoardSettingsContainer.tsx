@@ -7,6 +7,7 @@ import { BoardTitleState, BoardListState, ListsState } from '../../store/atoms'
 import produce from 'immer'
 import { BoardState } from '../../types'
 import BoardsProvider from '../../services/BoardsProvider'
+import loggerErrors from '../../utils/logger'
 
 const StyledSettingsMenu = styled.div`
     display: flex;
@@ -31,12 +32,14 @@ const StyledSettingsMenu = styled.div`
     }
 `
 interface props {
-    isOnCloseSettingsMenu: Function
+    handleCloseSettingMenu: Function
 }
 
-const BoardSettingsContainer: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
+const BoardSettingsContainer: React.FC<props> = ({
+    handleCloseSettingMenu,
+}) => {
     const [isOpenInputTitle, setIsOpenInputTitle] = useState(false)
-    const [isOpenRemoveList, setIsOpenRemoveList] = useState(false)
+    const [isOpenRemoveBoard, setIsOpenRemoveBoard] = useState(false)
     const [inputValue, setInputValue] = useState('')
     const [boardTitleState, setBoardTitleState] =
         useRecoilState(BoardTitleState)
@@ -45,6 +48,18 @@ const BoardSettingsContainer: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
     const boardId = boardTitleState.boardId
     const boardTitle = boardTitleState.boardTitle
 
+    const handleCloseRemoveBoard = useCallback(() => {
+        setIsOpenRemoveBoard(false)
+    }, [])
+
+    const handleOpenRemoveBoard = useCallback(() => {
+        setIsOpenRemoveBoard(true)
+    }, [])
+
+    const handleOpenInputTitle = useCallback(() => {
+        setIsOpenInputTitle(true)
+    }, [])
+
     const onChangeTitleHandler = useCallback(() => {
         setIsOpenInputTitle(false)
         if (!inputValue) return
@@ -52,7 +67,9 @@ const BoardSettingsContainer: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
         const currentBoardIndex = state.findIndex(
             (board) => board.boardId === boardId
         )
-        BoardsProvider.changeBoardTitle(inputValue, boardId)
+        BoardsProvider.changeBoardTitle(inputValue, boardId).catch((err) =>
+            loggerErrors(err)
+        )
 
         setState(
             produce(state, (draftState) => {
@@ -69,7 +86,7 @@ const BoardSettingsContainer: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
     const onRemoveBoardHandler = useCallback(() => {
         if (state.length === 1) return
 
-        BoardsProvider.deleteBoard(boardId)
+        BoardsProvider.deleteBoard(boardId).catch((err) => loggerErrors(err))
 
         setState(
             produce(state, (draftState) => {
@@ -79,8 +96,8 @@ const BoardSettingsContainer: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
             })
         )
         setListsState([])
-        isOnCloseSettingsMenu()
-    }, [boardId, isOnCloseSettingsMenu, setState, state, setListsState])
+        handleCloseSettingMenu()
+    }, [boardId, setState, state, setListsState, handleCloseSettingMenu])
 
     return (
         <StyledSettingsMenu>
@@ -88,16 +105,16 @@ const BoardSettingsContainer: React.FC<props> = ({ isOnCloseSettingsMenu }) => {
                 onChangeTitleHandler={onChangeTitleHandler}
                 inputValue={inputValue}
                 isOpenInputTitle={isOpenInputTitle}
-                setIsOpenRemoveList={setIsOpenRemoveList}
-                isOnCloseSettingsMenu={isOnCloseSettingsMenu}
+                handleOpenRemoveBoard={handleOpenRemoveBoard}
+                handleCloseSettingMenu={handleCloseSettingMenu}
                 boardTitle={boardTitle}
-                setIsOpenInputTitle={setIsOpenInputTitle}
+                handleOpenInputTitle={handleOpenInputTitle}
                 setInputValue={setInputValue}
             />
-            {isOpenRemoveList && (
+            {isOpenRemoveBoard && (
                 <BoardSettingsRemoveBoard
                     onRemoveBoardHandler={onRemoveBoardHandler}
-                    setIsOpenRemoveList={setIsOpenRemoveList}
+                    handleCloseRemoveBoard={handleCloseRemoveBoard}
                 />
             )}
         </StyledSettingsMenu>

@@ -44,21 +44,18 @@ const CloseInputIcon = styled.span`
     }
 `
 interface props {
-    setIsOpenInputForm: Function
+    handleCloseInput: Function
     onAddCardAction: Function
     setInputValue: Function
     inputValue: string
 }
 
 const AddActionInputForm: React.FC<props> = ({
-    setIsOpenInputForm,
+    handleCloseInput,
     onAddCardAction,
     setInputValue,
     inputValue,
 }) => {
-    const handleCloseInput = () => {
-        setIsOpenInputForm(false)
-    }
     const handleChange = useCallback(
         (e: { target: { value: string } }) => setInputValue(e.target.value),
         [setInputValue]
@@ -74,7 +71,7 @@ const AddActionInputForm: React.FC<props> = ({
             />
             <ButtonsWrapper>
                 <SubmitButton>Save</SubmitButton>
-                <CloseInputIcon onClick={handleCloseInput}>
+                <CloseInputIcon onClick={() => handleCloseInput()}>
                     <GrClose />
                 </CloseInputIcon>
             </ButtonsWrapper>

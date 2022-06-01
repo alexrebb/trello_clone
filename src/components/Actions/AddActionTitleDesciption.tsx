@@ -10,20 +10,16 @@ const StyledWrapper = styled.div`
     align-items: center;
 `
 interface props {
-    setIsOpenInputForm: Function
+    handleOpenForm: Function
     cardTitle: string
 }
 
 const AddActionTitleDesciption: React.FC<props> = ({
     cardTitle,
-    setIsOpenInputForm,
+    handleOpenForm,
 }) => {
-    const handleOpenForm = () => {
-        setIsOpenInputForm(true)
-    }
-
     return (
-        <StyledWrapper onClick={handleOpenForm}>
+        <StyledWrapper onClick={() => handleOpenForm()}>
             <BsCardChecklist />
             <StyledTitle>{cardTitle}</StyledTitle>
         </StyledWrapper>

@@ -3,7 +3,7 @@ import BoardSettingContainer from '../components/BoardSettings/BoardSettingsCont
 import styled from 'styled-components/macro'
 import Menu from '../components/Menu/Menu'
 import ListsContainer from '../components/Lists/ListsContainer'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { BoardTitleState } from '../store/atoms'
 import { BoardList } from '../types'
@@ -18,13 +18,16 @@ const DashBoard = () => {
     const [isOpenBoardSettings, setIsOpenBoardSettings] = useState(false)
     const setBoardTitleState = useSetRecoilState(BoardTitleState)
 
-    const isOnOpenSettingsMenu = (boardState: BoardList) => {
-        setBoardTitleState(boardState)
-        setIsOpenBoardSettings(true)
-    }
-    const isOnCloseSettingsMenu = () => {
+    const isOnOpenSettingsMenu = useCallback(
+        (boardState: BoardList) => {
+            setBoardTitleState(boardState)
+            setIsOpenBoardSettings(true)
+        },
+        [setBoardTitleState]
+    )
+    const handleCloseSettingMenu = useCallback(() => {
         setIsOpenBoardSettings(false)
-    }
+    }, [setIsOpenBoardSettings])
 
     return (
         <Layout>
@@ -32,7 +35,7 @@ const DashBoard = () => {
                 <Menu isOnOpenSettingsMenu={isOnOpenSettingsMenu} />
                 {isOpenBoardSettings && (
                     <BoardSettingContainer
-                        isOnCloseSettingsMenu={isOnCloseSettingsMenu}
+                        handleCloseSettingMenu={handleCloseSettingMenu}
                     />
                 )}
 

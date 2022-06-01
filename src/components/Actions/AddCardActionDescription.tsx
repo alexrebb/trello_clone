@@ -14,20 +14,16 @@ word-break: break-all;
 }
 `
 interface props {
-    setIsOpenInputForm: Function
+    handleOpenInput: Function
     cardDescription: string
 }
 
 const AddCardActionDescription: React.FC<props> = ({
-    setIsOpenInputForm,
+    handleOpenInput,
     cardDescription,
 }) => {
-    const handleOpenInput = () => {
-        setIsOpenInputForm(true)
-    }
-
     return (
-        <StyledDescription onClick={handleOpenInput}>
+        <StyledDescription onClick={() => handleOpenInput()}>
             {cardDescription || 'Add a more deteiled description...'}
         </StyledDescription>
     )

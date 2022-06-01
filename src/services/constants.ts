@@ -1,1 +1,3 @@
-export const baseURL = 'http://localhost:4177/api'
+import env from 'react-dotenv'
+
+export const baseURL = env.API_CONNECT
