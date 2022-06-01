@@ -19,8 +19,10 @@ interface props {
 }
 
 const AddCardBtn: React.FC<props> = ({ setIsOpenInputForm }) => {
+    const handleOpenInput = () => setIsOpenInputForm(true)
+
     return (
-        <StyledAddCard onClick={() => setIsOpenInputForm(true)}>
+        <StyledAddCard onClick={handleOpenInput}>
             <HiOutlinePlus />
             <span>Add a card</span>
         </StyledAddCard>

@@ -1,7 +1,7 @@
 import AddActionBtn from './AddActionBtn'
 import AddActionInputForm from './AddActionInputForm'
 import { CardAction } from '../../types'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { useRecoilState, useRecoilValue } from 'recoil'
 import { CardActionsState, CardIdState } from '../../store/atoms'
 import produce from 'immer'
@@ -17,29 +17,36 @@ const CardAddAction = () => {
 
     const displayDateWithTime = moment().format('LLLL')
 
-    const onAddCardAction = (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!inputValue) return
-        setIsOpenInputForm(false)
-        const newAction: CardAction = {
-            listId: cardState.listId,
-            cardId: cardState.cardId,
-            actionId: uuid(),
-            action: inputValue,
-            date: displayDateWithTime,
-        }
-        ActionsProvider.createAction(newAction).then((res: any) => {
-            if (res.status === 200) {
-                console.log('Success')
+    const onAddCardAction = useCallback(
+        (e: React.FormEvent) => {
+            e.preventDefault()
+            if (!inputValue) return
+            setIsOpenInputForm(false)
+            const newAction: CardAction = {
+                listId: cardState.listId,
+                cardId: cardState.cardId,
+                actionId: uuid(),
+                action: inputValue,
+                date: displayDateWithTime,
             }
-        })
-        setActionsState(
-            produce(actionsState, (draftState) => {
-                draftState.push(newAction)
-            })
-        )
-        setInputValue('')
-    }
+            ActionsProvider.createAction(newAction)
+
+            setActionsState(
+                produce(actionsState, (draftState) => {
+                    draftState.push(newAction)
+                })
+            )
+            setInputValue('')
+        },
+        [
+            actionsState,
+            cardState.cardId,
+            cardState.listId,
+            displayDateWithTime,
+            inputValue,
+            setActionsState,
+        ]
+    )
 
     return (
         <>

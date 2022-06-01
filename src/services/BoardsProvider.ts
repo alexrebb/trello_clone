@@ -3,7 +3,7 @@ import { baseURL } from './constants'
 import { param } from '../types'
 
 class BoardsProvider {
-    getOptions = ({ method, body, params }: param) => {
+    static getOptions = ({ method, body, params }: param) => {
         const options = {
             method,
             headers: {
@@ -21,33 +21,46 @@ class BoardsProvider {
         return options
     }
 
-    getBoardList = async () => {
+    static getBoardList = async () => {
         return await fetch(
             `${baseURL}/get-board-list`,
             this.getOptions({ method: 'GET' })
-        ).then((res) => res.json())
+        ).then((res) => {
+            if (res.status === 400)
+                console.log('Error fetching get boards list ')
+            if (res.status === 200) {
+                return res.json()
+            }
+        })
     }
 
-    createBoard = async (board: BoardList) => {
+    static createBoard = async (board: BoardList) => {
         return await fetch(
             `${baseURL}/create-board`,
             this.getOptions({ method: 'POST', body: board })
-        ).then((res) => res.json())
+        ).then((res) => {
+            if (res.status === 400) console.log('Error fetching create board ')
+        })
     }
 
-    deleteBoard = async (boardId: string) => {
+    static deleteBoard = async (boardId: string) => {
         return await fetch(
             `${baseURL}/delete-board`,
             this.getOptions({ method: 'DELETE', body: { boardId } })
-        ).then((res) => res.status === 200)
+        ).then((res) => {
+            if (res.status === 400) console.log('Error fetching delete board ')
+        })
     }
 
-    changeBoardTitle = async (boardTitle: string, boardId: string) => {
+    static changeBoardTitle = async (boardTitle: string, boardId: string) => {
         return await fetch(
             `${baseURL}/change-board-title`,
             this.getOptions({ method: 'PUT', body: { boardId, boardTitle } })
-        ).then((res) => res.status === 200)
+        ).then((res) => {
+            if (res.status === 400)
+                console.log('Error fetching change board title ')
+        })
     }
 }
 
-export default new BoardsProvider()
+export default BoardsProvider

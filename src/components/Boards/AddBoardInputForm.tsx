@@ -1,5 +1,7 @@
 import styled from 'styled-components/macro'
 import { GrClose } from 'react-icons/gr'
+import { useCallback } from 'react'
+
 const StyledForm = styled.form`
     width: 100%;
     display: flex;
@@ -39,7 +41,6 @@ interface props {
     onAddBoardHandler: Function
     inputValue: string
     setInputValue: Function
-    onCloseOnBlur: Function
 }
 
 const AddBoardInputForm: React.FC<props> = ({
@@ -47,23 +48,26 @@ const AddBoardInputForm: React.FC<props> = ({
     onAddBoardHandler,
     setInputValue,
     inputValue,
-    onCloseOnBlur,
 }) => {
+    const handleCloseInput = () => setIsOpenNewBoardInputForm(false)
+
+    const handleChange = useCallback(
+        (e: { target: { value: string } }) => setInputValue(e.target.value),
+        [setInputValue]
+    )
+
     return (
         <StyledForm onSubmit={(e) => onAddBoardHandler(e)}>
             <StyledInput
                 placeholder="Enter a board title..."
                 autoFocus
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                onBlur={() => onCloseOnBlur}
+                onChange={handleChange}
                 maxLength={20}
             />
             <ButtonsWrapper>
                 <SubmitButton>Add board</SubmitButton>
-                <CloseInputIcon
-                    onClick={() => setIsOpenNewBoardInputForm(false)}
-                >
+                <CloseInputIcon onClick={handleCloseInput}>
                     <GrClose />
                 </CloseInputIcon>
             </ButtonsWrapper>

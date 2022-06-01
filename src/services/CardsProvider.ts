@@ -3,7 +3,7 @@ import { baseURL } from './constants'
 import { param } from '../types'
 
 class CardsProvider {
-    getOptions = ({ method, body, params }: param) => {
+    static getOptions = ({ method, body, params }: param) => {
         const options = {
             method,
             headers: {
@@ -21,14 +21,16 @@ class CardsProvider {
         return options
     }
 
-    createCard = async (listId: string, card: Cards) => {
+    static createCard = async (listId: string, card: Cards) => {
         return await fetch(
             `${baseURL}/create-card`,
             this.getOptions({ method: 'POST', body: { listId, card } })
-        ).then((res) => res.json())
+        ).then((res) => {
+            if (res.status === 400) console.log('Error fetching create card ')
+        })
     }
 
-    changeCardTitle = async (
+    static changeCardTitle = async (
         cardTitle: string,
         listId: string,
         cardId: string
@@ -39,10 +41,13 @@ class CardsProvider {
                 method: 'PUT',
                 body: { cardTitle, listId, cardId },
             })
-        ).then((res) => res.status === 200)
+        ).then((res) => {
+            if (res.status === 400)
+                console.log('Error fetching change card title ')
+        })
     }
 
-    changeCardDescription = async (
+    static changeCardDescription = async (
         cardDescription: string,
         listId: string,
         cardId: string
@@ -53,8 +58,11 @@ class CardsProvider {
                 method: 'PUT',
                 body: { cardDescription, listId, cardId },
             })
-        ).then((res) => res.status === 200)
+        ).then((res) => {
+            if (res.status === 400)
+                console.log('Error fetching change card description ')
+        })
     }
 }
 
-export default new CardsProvider()
+export default CardsProvider

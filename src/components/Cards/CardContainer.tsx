@@ -1,5 +1,5 @@
 import Card from './Card'
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 import { useSetRecoilState } from 'recoil'
 import {
@@ -26,20 +26,16 @@ const CardContainer: React.FC<props> = ({
     const setCardId = useSetRecoilState(CardIdState)
     const setIsOpemModal = useSetRecoilState(isOpenModalState)
 
-    const onOpenModalCard = () => {
+    const onOpenModalCard = useCallback(() => {
         setIsOpemModal(true)
         setCardId({
             cardId: cardId,
             listId: listId,
         })
-        ActionsProvider.getCurrentActionList(cardId).then((res: any) => {
-            if (res.errors) {
-                console.log('Ошибка')
-            } else {
-                setActionListState(res)
-            }
-        })
-    }
+        ActionsProvider.getCurrentActionList(cardId).then((res: any) =>
+            setActionListState(res)
+        )
+    }, [cardId, listId, setActionListState, setCardId, setIsOpemModal])
 
     return (
         <Draggable draggableId={cardId} index={index}>

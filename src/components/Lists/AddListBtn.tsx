@@ -10,12 +10,12 @@ interface props {
 }
 
 const AddListBtn: React.FC<props> = ({ setIsOpenNewListInputForm }) => {
+    const hadnleOpenInput = () => setIsOpenNewListInputForm(true)
+
     return (
         <StyledAddList>
             <HiOutlinePlus />
-            <span onClick={() => setIsOpenNewListInputForm(true)}>
-                Add another list
-            </span>
+            <span onClick={hadnleOpenInput}>Add another list</span>
         </StyledAddList>
     )
 }

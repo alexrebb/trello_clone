@@ -3,7 +3,7 @@ import AddActionTitleDescriptionInputForm from './AddActionTitleDescriptionInput
 import { useRecoilValue, useRecoilState } from 'recoil'
 import { filteredCardState } from '../../store/selectors'
 import { ListsState, CardIdState } from '../../store/atoms'
-import { useState, memo } from 'react'
+import { useState, memo, useCallback } from 'react'
 
 import produce from 'immer'
 import CardsProvider from '../../services/CardsProvider'
@@ -18,40 +18,43 @@ const CardTitleDescription = () => {
     const listId = cardState.listId
     const cardTitle = currentCard.cardTitle
 
-    const onChangeCardTitle = (e: React.FormEvent) => {
-        e.preventDefault()
-        if (!inputValue) return
-        setIsOpenInputForm(false)
-        const currentListIndex = state.findIndex((l) => l.listId === listId)
-        const currentCardIndex = state[currentListIndex].cards.findIndex(
-            (c) => c.cardId === cardId
-        )
-        CardsProvider.changeCardTitle(inputValue, listId, cardId).then(
-            (res: any) => {
-                if (res.status === 200) {
-                    console.log('Success')
+    const onChangeCardTitle = useCallback(
+        (e: React.FormEvent) => {
+            e.preventDefault()
+            if (!inputValue) return
+            setIsOpenInputForm(false)
+            const currentListIndex = state.findIndex((l) => l.listId === listId)
+            const currentCardIndex = state[currentListIndex].cards.findIndex(
+                (c) => c.cardId === cardId
+            )
+            CardsProvider.changeCardTitle(inputValue, listId, cardId).then(
+                (res: any) => {
+                    if (res.status === 200) {
+                        console.log('Success')
+                    }
                 }
-            }
-        )
+            )
 
-        setState(
-            produce(state, (draftState) => {
-                draftState[currentListIndex].cards[currentCardIndex].cardTitle =
-                    inputValue
-            })
-        )
-        setInputValue('')
-    }
+            setState(
+                produce(state, (draftState) => {
+                    draftState[currentListIndex].cards[
+                        currentCardIndex
+                    ].cardTitle = inputValue
+                })
+            )
+            setInputValue('')
+        },
+        [cardId, inputValue, listId, setState, state]
+    )
 
     return (
         <>
-            {!isOpenInputForm && (
+            {!isOpenInputForm ? (
                 <AddActionTitleDesciption
                     cardTitle={cardTitle}
                     setIsOpenInputForm={setIsOpenInputForm}
                 />
-            )}
-            {isOpenInputForm && (
+            ) : (
                 <AddActionTitleDescriptionInputForm
                     setIsOpenInputForm={setIsOpenInputForm}
                     inputValue={inputValue}

@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro'
 import { MdMoreHoriz } from 'react-icons/md'
+import { useCallback } from 'react'
 
 const StyledListTitle = styled.div`
     font-weight: bold;
@@ -43,23 +44,29 @@ const ListTitle: React.FC<props> = ({
     onChangeTitleHandler,
     setIsOpenRemoveList,
 }) => {
+    const handleOpenInput = () => setIsOpenInputTitle(true)
+    const handleOpenRemoveList = () => setIsOpenRemoveList(true)
+    const handleChange = useCallback(
+        (e: { target: { value: string } }) => setInputValue(e.target.value),
+        [setInputValue]
+    )
+
     return (
         <StyledTitleContainer>
-            {!isOpenInputTitle && (
-                <StyledListTitle onClick={() => setIsOpenInputTitle(true)}>
+            {!isOpenInputTitle ? (
+                <StyledListTitle onClick={handleOpenInput}>
                     {listTitle}
                 </StyledListTitle>
-            )}
-            {isOpenInputTitle && (
+            ) : (
                 <StyledInput
                     type="text"
                     onBlur={() => onChangeTitleHandler()}
                     autoFocus
                     value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
+                    onChange={handleChange}
                 />
             )}
-            <StyledIcon onClick={() => setIsOpenRemoveList(true)}>
+            <StyledIcon onClick={handleOpenRemoveList}>
                 <MdMoreHoriz />
             </StyledIcon>
         </StyledTitleContainer>

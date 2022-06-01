@@ -39,14 +39,14 @@ const RemoveList: React.FC<props> = ({
     setIsOpenRemoveList,
     onRemoveListHandler,
 }) => {
+    const handleCloseRemoveList = () => setIsOpenRemoveList(false)
+
     return (
         <StyledRemoveList>
             <SryleRemoveList>Remove List?</SryleRemoveList>
             <div>
                 <StyledBtn onClick={() => onRemoveListHandler()}>Yes</StyledBtn>
-                <StyledBtn onClick={() => setIsOpenRemoveList(false)}>
-                    No
-                </StyledBtn>
+                <StyledBtn onClick={handleCloseRemoveList}>No</StyledBtn>
             </div>
         </StyledRemoveList>
     )

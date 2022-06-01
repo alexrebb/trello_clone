@@ -21,8 +21,10 @@ interface props {
 }
 
 const AddBoardBtn: React.FC<props> = ({ setIsOpenNewBoardInputForm }) => {
+    const handleOpenInput = () => setIsOpenNewBoardInputForm(true)
+
     return (
-        <StyledNewBoard onClick={() => setIsOpenNewBoardInputForm(true)}>
+        <StyledNewBoard onClick={handleOpenInput}>
             <HiOutlinePlus />
             <span>New board</span>
         </StyledNewBoard>

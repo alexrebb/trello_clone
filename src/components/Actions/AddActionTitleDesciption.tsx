@@ -18,8 +18,12 @@ const AddActionTitleDesciption: React.FC<props> = ({
     cardTitle,
     setIsOpenInputForm,
 }) => {
+    const handleOpenForm = () => {
+        setIsOpenInputForm(true)
+    }
+
     return (
-        <StyledWrapper onClick={() => setIsOpenInputForm(true)}>
+        <StyledWrapper onClick={handleOpenForm}>
             <BsCardChecklist />
             <StyledTitle>{cardTitle}</StyledTitle>
         </StyledWrapper>

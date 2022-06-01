@@ -1,5 +1,6 @@
 import styled from 'styled-components/macro'
 import { GrClose } from 'react-icons/gr'
+import { useCallback } from 'react'
 
 const StyledInputForm = styled.form`
     width: 100%;
@@ -55,17 +56,23 @@ const AddCardInputForm: React.FC<props> = ({
     setInputValue,
     setIsOpenInputForm,
 }) => {
+    const handleChange = useCallback(
+        (e: { target: { value: string } }) => setInputValue(e.target.value),
+        [setInputValue]
+    )
+    const handleCloseInput = () => setIsOpenInputForm(false)
+
     return (
         <StyledInputForm onSubmit={(e) => onAddNewCardHandler(e)}>
             <StyledTextArea
                 placeholder="Enter a title for this card..."
                 autoFocus
                 value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
+                onChange={handleChange}
             />
             <ButtonsWrapper>
                 <SubmitButton>Add card</SubmitButton>
-                <CloseInputIcon onClick={() => setIsOpenInputForm(false)}>
+                <CloseInputIcon onClick={handleCloseInput}>
                     <GrClose />
                 </CloseInputIcon>
             </ButtonsWrapper>

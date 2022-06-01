@@ -1,6 +1,6 @@
 import Board from './Board'
 
-import { memo } from 'react'
+import { memo, useCallback } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { BoardIdState, BoardTitleState, ListsState } from '../../store/atoms'
 import ListsProvider from '../../services/ListsProvider'
@@ -28,18 +28,14 @@ const BoardContainer: React.FC<props> = ({
         onOpenSettingsMenu(boardState)
     }
 
-    const onClickHandleBoard = () => {
+    const onClickHandleBoard = useCallback(() => {
         setCurrentBoard([])
         setBoardIdState(boardId)
         ListsProvider.getCurrentLists(boardId).then((res: any) => {
-            if (res.errors) {
-                console.log('Ошибка')
-            } else {
-                setCurrentBoard(res)
-                setBoardTitleState(boardState)
-            }
+            setCurrentBoard(res)
+            setBoardTitleState(boardState)
         })
-    }
+    }, [setBoardIdState, setBoardTitleState, setCurrentBoard])
 
     return (
         <Board
